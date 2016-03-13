@@ -1,0 +1,79 @@
+<header class="header-wrap navbar-fixed-top">
+	<div class="header-tools hidden-sm hidden-xs">
+		<div class="container">
+			<div class="col-md-12">
+				<div class="header-tools-wrapper">
+					#if(!$user)
+						<a href="/application/createaccount/create_account.html">Create an Account</a>
+						<a href="/dotCMS/login?referrer=/intranet/">Login</a>
+					#else
+						<a href="/dotCMS/myAccount">My Account</a>
+						<a href="/dotCMS/logout?referrer=/home/">Logout</a>
+					#end
+					<a href="/about-us/locations/">Find A Branch</a>
+					<a href="/contact-us/" class="hidden-xs">Contact Us</a>
+					
+					<form id="searchForm" name="searchForm" action="/home/site-search.html" class="searchForm-header ">
+						<input id="search-input" name="q" type="text" autocomplete="off" placeholder="Site Search" />
+						<input class="btn btn-small btn-primary" type="submit" alt="Search" value="Search" name="search" />
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="navbar navbar-inverse" role="banner">
+		<div class="container header-navbar">
+			<div class="navbar-header">
+				 <div class="col-xs-9 col-md-12">
+                    #if($UtilMethods.isSet($!user) && $cmsuser.isUserRole($user, "Intranet") && !($EDIT_MODE))
+                      <a class="header-logo navbar-brand" href="/"><img src="${dotTheme.path}images/layout/intranet-logo.png" alt="Quest | dotCMS Starter Site"></a>
+                    #else
+                      <a class="header-logo navbar-brand" href="/"><img src="${dotTheme.path}images/layout/logo-small.png" alt="Quest | dotCMS Starter Site"></a>
+                    #end
+                </div>
+                <div class="col-xs-3 col-md-12">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+            </div><!-- navbar-header -->
+            <nav class="navbar-collapse bs-navbar-collapse collapse" role="navigation" style="height: 1px;">
+                <ul class="nav navbar-nav">
+                    #set($list = $navtool.getNav("/"))
+                    #foreach($n in $list)
+                        #set($children = $n.children)
+                        #if($children && $children.size() > 0)
+                            <li class="dropdown #if($n.active) active #end">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">${n.title} <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    #foreach($ch in $children)
+                                        <li #if($ch.active) class="active" #end><a href='${ch.href}'>${ch.title}</a></li>
+                                    #end
+                                </ul>
+                            </li>
+                        #else
+                            <li class="#if($n.active) active #end"><a href='${n.href}'>${n.title}</a></li>
+                        #end
+                    #end
+                </ul>
+                
+            	#if(!$user)
+            		<div class="col-md-6 hidden-md hidden-lg hidden-xl"><a href="/application/createaccount/create_account.html">Create an Account</a></div>
+            		<div class="col-md-6 hidden-md hidden-lg hidden-xl"><a href="/dotCMS/login?referrer=/intranet/">Login</a></div>
+            	#else
+            		<div class="col-md-6 hidden-md hidden-lg hidden-xl"><a href="/dotCMS/myAccount">My Account</a></div>
+            		<div class="col-md-6 hidden-md hidden-lg hidden-xl"><a href="/dotCMS/logout?referrer=/home/">Logout</a></div>
+            	#end
+               
+            	<div class="col-md-12 hidden-md hidden-lg hidden-xl">
+        			<form id="searchForm" name="searchForm" action="/home/site-search.html" class="searchForm-header">
+						<input id="search-input" name="q" type="text" autocomplete="off" placeholder="Site Search" />
+						<input class="btn btn-small btn-primary" type="submit" alt="Search" value="Search" name="search" />
+					</form>
+                </div>
+            </nav><!-- nav-collapse -->
+        </div><!-- container -->
+    </div><!-- navbar -->
+</header>

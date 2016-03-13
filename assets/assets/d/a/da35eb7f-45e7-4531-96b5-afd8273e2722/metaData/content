@@ -1,0 +1,50 @@
+<script>
+	$(document).ready(function() {
+		jquery.getjson("http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22%5egspc%22%2c%22%5eixic%22%2c%22clq12.nym%22%2c%22%5etnx%22%2c%22gcq12.cmx%22)&format=json&env=store%3a%2f%2fdatatables.org%2falltableswithkeys&callback=?",
+		function(data) {
+			var i = 0;
+			while (i <= 5) {
+				console.log(data.query.results.quote[i]);
+				var x = "<li><ul>"
+				var x = x + '<li class=\"stock-name\"><h4>';
+				if ((data.query.results.quote[i].name).indexof("oil") != -1) {
+					var x = x + "oil";
+				} else if ((data.query.results.quote[i].name).indexof("nasdaq") != -1) {
+					var x = x + "nasdaq";
+				} else if ((data.query.results.quote[i].name).indexof("interest") != -1) {
+					var x = x + "10-year bond";
+				} else if ((data.query.results.quote[i].name).indexof("gold") != -1) {
+					var x = x + "gold";
+				} else {
+					var x = x + (data.query.results.quote[i].name);
+				}
+				var x = x + '</h4></li>';
+				var x = x + "<li>" + (data.query.results.quote[i].lasttradepriceonly) + "</li>";
+
+				if ((data.query.results.quote[i].change).indexof("-") != -1) {
+					var x = x + "<li class=\"down\">" + (data.query.results.quote[i].change) + "</li>";
+					var x = x + "<li class=\"down\">" + (data.query.results.quote[i].changeinpercent) + "</li>";
+				} else if ((data.query.results.quote[i].change).indexof("+") != -1) {
+					var x = x + "<li class=\"up\">" + (data.query.results.quote[i].change) + "</li>";
+					var x = x + "<li class=\"up\">" + (data.query.results.quote[i].changeinpercent) + "</li>";
+				} else {
+					var x = x + "<li>" + (data.query.results.quote[i].change) + "</li>";
+					var x = x + "<li>" + (data.query.results.quote[i].changeinpercent) + "</li>";
+				}
+        
+				var x = x + "</ul></li>"
+        
+				jquery("#quotes").append(x);
+				i++;
+			}
+		});
+	});
+</script>
+
+<ul id="quotes" class="intranet-stock-quote"></ul>
+
+#set($myjson = $json.fetch("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20('%5egspc'%2c'%5edji'%2c'%5eixic')%20&format=json&diagnostics=true&env=store%3a%2f%2fdatatables.org%2falltableswithkeys&callback="))
+
+#foreach($stock in $myjson)
+	$stock.result.quote.symbol
+#end

@@ -1,0 +1,66 @@
+#if($EDIT_MODE)
+	<div style="font-weight: bold;margin: 20px 0 10px 0;">$!{title}</div>
+	<div class="carousel-edit-mode-item" style="background: $backgroundColor">
+		<img src="/contentAsset/resize-image/${ContentIdentifier}/image/h/300" alt="$!{title}" />
+	</div>
+#else
+
+	
+	#if($velocityCount > 1)
+		#set($classItem = 'item layout' + $layout)
+	#else
+		#set($classItem = 'item active layout' + $layout)
+	#end
+
+	#if($layout == 1)
+		<div class="$!{classItem}" style="background: $backgroundColor">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+						<img src="/contentAsset/resize-image/${ContentIdentifier}/image/h/450" alt="$!{title}" style="float:right;">
+					</div>
+					<div class="col-md-6 banner-caption">
+						$!{caption1}
+					</div>
+				</div>
+			</div>
+		</div>
+	#elseif($layout == 2)
+		<div class="$!{classItem}" style="background: $backgroundColor">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 banner-caption">
+						$!{caption1}
+					</div>
+					<div class="col-md-6">
+						<img src="/contentAsset/resize-image/${ContentIdentifier}/image/h/450" style="float:left;">
+					</div>
+				</div>
+			</div>
+		</div>
+	#elseif($layout == 3)
+		<div class="$!{classItem}" style="background: $backgroundColor url('/contentAsset/resize-image/${ContentIdentifier}/image/w/1200') no-repeat center center;">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-7 col-md-offset-1 banner-caption">
+						<div style="height:370px;margin-top: 80px;">$!{caption1}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	#elseif($layout == 4)
+		<div class="$!{classItem}">
+			<div class="bg-wrapper" style="background-color: $backgroundColor; background-image: url('/contentAsset/resize-image/${ContentIdentifier}/image/w/1200');">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6">&nbsp</div>
+						<div class="col-md-6 banner-caption">
+							$!{caption1}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	#end
+	#set($dummy = $slidesList.add("$!{ContentIdentifier}"))
+#end

@@ -1,0 +1,41 @@
+#if($utilmethods.isset($user))
+
+<div class="login-form-wrap">
+  <div class="login-logged-in">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">your account</h3>
+      </div>
+      <div class="panel-body">
+        <p>hello, <b>freddy montes</b></p>
+        <ul>
+          <li><a href="/dotcms/myaccount">my account</a></li>
+          <li><a href="/application/login/forgot_password.html">forgot password</a></li>
+          <li><a href="/dotcms/logout?referrer=/home/">logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+#else
+
+  <div class="login-form-wrap">
+  #set($loginformsourcecode ='//shared/vtl/widgets/full-site/account-login-form.vtl')
+  #loginform()
+
+  <div class="login-create-account">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">create account</h3>
+      </div>
+      <div class="panel-body">
+        <p>create an account to get access to our intranet and upload files to our document repository. if you don’t want to create an account you can login in with:</p>
+        <p><b>username:</b> bill@dotcms.com<br><b>password:</b> bill</p>
+        <p class="create-account-button"><a href="/application/createaccount/create_account.html" class="btn btn-default btn-lg btn-create-account">create account</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+#en

@@ -1,0 +1,42 @@
+#set($cusfieldvarname="title")
+<script>
+
+	function updatedisplayurltitle(){
+		
+		// get the title entered by the user
+		var plaintitle = dojo.byid("$cusfieldvarname");	
+		
+		if(plaintitle == undefined || plaintitle.value.length ==0){
+			dojo.byid("displayurltitle").innerhtml = "";
+			dojo.byid("urltitle").value="";
+			return;
+		}
+		
+		// make a friendly url
+		var urltitle = plaintitle.value.tolowercase();
+		urltitle= urltitle.replace(/^\s+|\s+$/g,"");
+		urltitle = urltitle.replace(/[^a-za-z 0-9]+/g,' ');	
+		urltitle = urltitle.replace(/\s/g, "-");
+		while(urltitle.indexof("--") > -1){
+			urltitle = urltitle.replace("--",'-');	
+		}
+		while(urltitle.lastindexof("-") == urltitle.length -1 ){
+			urltitle=urltitle.substring(0,urltitle.length -1);
+		}
+		// set the values of the display place holder and the custom field
+		// the   is to hold the div open
+		dojo.byid("displayurltitle").innerhtml = urltitle;
+		dojo.byid("urltitle").value=urltitle;
+	}
+
+
+	// attach this the text1 field onchange
+	dojo.addonload(function(){
+			dojo.connect(dojo.byid("$cusfieldvarname"), "onchange", null, "updatedisplayurltitle");
+		}
+	);
+	// populate the field on load
+	dojo.addonload(updatedisplayurltitle);
+
+</script>
+<div id="displayurltitle" style="height:20px"> </div>

@@ -1,0 +1,57 @@
+#if($urlmapcontent.inode && $urlmapcontent.syspublishdate.before($date.date))
+<div class="news-detail">
+  #editcontentlet($urlmapcontent.inode)
+  <h1 class="news-detail-title">
+    #dotedit($!urlmapcontent.inode,$!urlmapcontent.title)
+  </h1>
+  <div class="post-info">
+    <div class="add-this news-add-this header-add-this pull-right">
+      #dotparse('//shared/vtl/widgets/full-site/add-this.vtl')
+    </div>
+    <time datetime="$date.format('yyyy-mm-dd',$!urlmapcontent.syspublishdate)t$date.format('hh:mm:ss',$!urlmapcontent.syspublishdate)" class="date">$date.format('mmm dd yyyy',$!urlmapcontent.syspublishdate) at $date.format('hh:mm z',$!urlmapcontent.syspublishdate)</time>
+      <span class="comments">
+        <a href="#comments">
+          #if($urlmapcontent.commentscount > 0)
+            $urlmapcontent.commentscount comments
+          #else
+            no comments
+          #end
+        </a>
+      </span>
+  </div>
+
+  #if($utilmethods.isset($urlmapcontent.image) && $utilmethods.isset($urlmapcontent.image.file))
+    <div class="news-detail-image">
+      <img src='/contentasset/image/$!urlmapcontent.inode/image/byinode/1/filter/resize/resize_w/300' alt="$!{con.title}" />
+      #if($utilmethods.isset($urlmapcontent.caption))
+        <span class="news-detail-caption">$!urlmapcontent.caption</span>
+      #end
+    </div>
+  #end
+
+  #dotedit($!urlmapcontent.inode,$!urlmapcontent.story)
+
+  <div class="post-info-footer">
+    <div class="add-this news-add-this footer-add-this pull-right">
+      #dotparse('//shared/vtl/widgets/full-site/add-this.vtl')
+    </div>
+  </div>
+
+  <div id="comments" class="news-comments">
+    <!-- uncomment desired settings -->
+    ##set($commentsmoderation="news publisher") 
+    ##set($commentforcelogin = 'true')
+    ##set($commentdatedescending = true)
+    ##set($copmmentstriphtml = 'true')
+    #set($mycontent = $urlmapcontent.inode)
+    #set($commenttitle = 'comments')
+    #set($commentusecaptcha = 'true')
+    #set($commentautopublish = 'true')
+    #set($maxdepth = 2)
+    #set($commentsourcecode = '//shared/vtl/macros/comments.vtl')
+    #comment($mycontent)
+  </div>
+</div>
+#else
+  <div class="alert alert-info">we are sorry, but the story you are looking for is no longer available. <a href="/news-events/news/">click here to see all news stories</a>.</div>
+#end

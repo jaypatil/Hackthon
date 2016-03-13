@@ -1,0 +1,153 @@
+#if($urlmapcontent.inode)
+
+  <script>
+    $(document).ready(function() {
+
+      jquery.getjson("http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22$!{urlmapcontent.tickersymbol}%22)&format=json&env=store%3a%2f%2fdatatables.org%2falltableswithkeys&callback=?",
+      function(data) {
+        var q = (data.query.results.quote.previousclose);
+        var x = (data.query.results.quote.change);
+        var y = (data.query.results.quote.percentchange);
+
+        jquery("#price").append(q);
+
+        if (x.indexof("-") != -1) {
+          var x = "<span class=\"down\">&nbsp;" + x + "&nbsp;(" + y + ")</span>";
+        } else if (x.indexof("+") != -1) {
+          var x = "<span class=\"up\">&nbsp;" + x + "&nbsp;(" + y + ")</span>";
+        } else {
+          var x = "<span>&nbsp;" + x + "&nbsp;(" + y + ")</span>";
+        }
+        jquery("#change").append(x);
+      });
+
+    });
+  </script>
+
+<div class="product-detail">
+	
+	<div class="product-detail-title">
+		#editcontentlet($urlmapcontent.inode)
+		<h1 class="product-title">
+			#dotedit($!urlmapcontent.inode,$!urlmapcontent.title) $!{urlmapcontent.type1.selectvalue} ($!{urlmapcontent.tickersymbol})
+			<div class="dropdown product-nav">
+			  <a data-toggle="dropdown" href="#" class="btn btn-default"><i class="fa fa-chevron-down"></i></a>
+			  <ul class="dropdown-menu" role="menu" aria-labelledby="dlabel">
+			  		#foreach($con in $dotcontent.pull("+structurename:products +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host)",0,"products.title"))
+						#if($urlmapcontent.urltitle == $con.urltitle)
+							<li class="active"><a href="/products/$con.urltitle">$con.title $!{con.type1.selectvalue}</a></li>
+						#else
+							<li><a href="/products/$con.urltitle">$con.title $!{con.type1.selectvalue}</a></li>
+						#end
+					#end
+			  </ul>
+			</div>
+		</h1>
+		
+		
+		<!-- <div class="product-nav">
+			<select onchange="if(this.selectedindex!=0) self.location=this.options[this.selectedindex].value" id="product-nav" class="js-product-nav">
+				#foreach($con in $dotcontent.pull("+structurename:products +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host)",0,"products.title"))
+					#if($urlmapcontent.urltitle == $con.urltitle)
+						<option value="$con.urltitle" selected>$con.title $!{con.type1.selectvalue}</option>
+					#else
+						<option value="$con.urltitle">$con.title $!{con.type1.selectvalue}</option>
+					#end
+				#end
+			</select>
+		</div> -->
+	</div>
+	
+	<div class="product-detail-main">
+		#dotedit($!urlmapcontent.inode,$urlmapcontent.summary)
+		
+		<h3>charts</h3>
+		<!-- nav tabs -->
+		<ul class="list-inline chart-nav" role="tablist">
+		  <li><a href="#month1" role="tab" data-toggle="tab">1m</a></li>
+		  <li><a href="#month3" role="tab" data-toggle="tab">3m</a></li>
+		  <li class="active"><a href="#month6" role="tab" data-toggle="tab">6m</a></li>
+		  <li><a href="#year1" role="tab" data-toggle="tab">1y</a></li>
+		  <li><a href="#year2" role="tab" data-toggle="tab">2y</a></li>
+		  <li><a href="#year5" role="tab" data-toggle="tab">5y</a></li>
+		  <li><a href="#max" role="tab" data-toggle="tab">max</a></li>
+		</ul>
+		
+		<!-- tab panes -->
+		<div class="tab-content product-detail-chart">
+		  <div class="tab-pane" id="month1"><img src="http://chart.finance.yahoo.com/z?s=$!{urlmapcontent.tickersymbol}&t=1m&q=l&l=off&z=l&a=v&p=s&lang=en-us&region=us" alt="chart for $!{urlmapcontent.tickersymbol}" /></div>
+		  <div class="tab-pane" id="month3"><img src="http://chart.finance.yahoo.com/z?s=$!{urlmapcontent.tickersymbol}&t=3m&q=l&l=off&z=l&a=v&p=s&lang=en-us&region=us" alt="chart for $!{urlmapcontent.tickersymbol}" /></div>
+		  <div class="tab-pane active" id="month6"><img src="http://chart.finance.yahoo.com/z?s=$!{urlmapcontent.tickersymbol}&t=6m&q=l&l=off&z=l&a=v&p=s&lang=en-us&region=us" alt="chart for $!{urlmapcontent.tickersymbol}" /></div>
+		  <div class="tab-pane" id="year1"><img src="http://chart.finance.yahoo.com/z?s=$!{urlmapcontent.tickersymbol}&t=1y&q=l&l=off&z=l&a=v&p=s&lang=en-us&region=us" alt="chart for $!{urlmapcontent.tickersymbol}" /></div>
+		  <div class="tab-pane" id="year2"><img src="http://chart.finance.yahoo.com/z?s=$!{urlmapcontent.tickersymbol}&t=2y&q=l&l=off&z=l&a=v&p=s&lang=en-us&region=us" alt="chart for $!{urlmapcontent.tickersymbol}" /></div>
+		  <div class="tab-pane" id="year5"><img src="http://chart.finance.yahoo.com/z?s=$!{urlmapcontent.tickersymbol}&t=5y&q=l&l=off&z=l&a=v&p=s&lang=en-us&region=us" alt="chart for $!{urlmapcontent.tickersymbol}" /></div>
+		  <div class="tab-pane" id="max"><img src="http://chart.finance.yahoo.com/z?s=$!{urlmapcontent.tickersymbol}&t=my&q=l&l=off&z=l&a=v&p=s&lang=en-us&region=us" alt="chart for $!{urlmapcontent.tickersymbol}" /></div>
+		</div>
+		
+	</div>
+	
+
+	<aside class="product-detail-sidebar">
+		<h3 class="products-headlines-title">performance &amp; price</h3>
+		<table class="table product-info">
+			<tr>
+				<td>price:</td>
+				<td class="price" id="price"></td>
+			</tr>
+			<tr>
+				<td>change:</td>
+				<td><span id="change"></span></td>
+			</tr>
+			<tr>
+				<td>asset class:</td>
+				<td>$!{urlmapcontent.assetclass}</td>
+			</tr>
+			
+			#if($urlmapcontent.assetclass == "stock" || $urlmapcontent.assetclass == "bond")
+				<tr>
+					<td>category:</td>
+					<td>
+						#set($category = "$!{urlmapcontent.marketcap.selectvalue}$!{urlmapcontent.quality.selectvalue}-$!{urlmapcontent.style.selectvalue}$!{urlmapcontent.maturity.selectvalue}")
+						<div title="$category" class="normaltip  $category"></div>
+					</td>
+				</tr>
+			#end
+			<tr>
+				<td>expense ratio:</td>
+				<td>$!{urlmapcontent.expenseratio}&#37;</td>
+			</tr>
+			<tr>
+				<td>inception:</td>
+				<td>$date.format('mm/dd/yyyy',$urlmapcontent.inception)</td>
+			</tr>
+			<tr>
+				<td style="vertical-align:middle;">risk potential</td>
+				<td><div class="risk-lg-system risk${urlmapcontent.risk.selectvalue}-lg normaltip" title="${urlmapcontent.risk.selectvalue}" style="margin:0;"><!-- ${urlmapcontent.risk.selectvalue} --></div></td>
+			</tr>
+		</table>
+		
+		<section class="products-headlines">
+			<h3 class="products-headlines-title">top stories</h3>
+			<ul class="media-list media-list-headlines products-headlines-list">
+				#set($rsstotal = 5)
+				#pullrssfeed("http://feeds.finance.yahoo.com/rss/2.0/headline?s=$!{urlmapcontent.tickersymbol}&region=us&lang=en-us")
+				#foreach($content in $list)
+					<li class="media">
+						<article class="media-body">
+							<h4 class="media-heading headlines-title"><a href="$content.link" target="_blank">$!content.title</a></h4>
+							<div class="headlines-info">
+								<time class="date" datetime="$!content.pubdate">$!content.pubdate</time>
+							</div>
+						</article>
+					</li>
+				#end
+			</ul>
+		</section>
+    </aside>
+</div>
+
+#else
+	<div class="alert alert-info">
+		<h3>we are sorry, but the product you are looking for is no longer available. <a href="/products/">click here to see all our products</a>.</h3>
+	</div>
+#end

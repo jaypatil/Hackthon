@@ -1,0 +1,35 @@
+#set($nowsers= $date.format('yyyymmddhhmmss', $date.getdate()))
+#set($_qk = "+structurename:document 
+	+(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host)
+	+(categories:research)
+	+document.syspublishdate:[19001010101000 to $nowsers]
+	")
+
+#set($results = $dotcontent.pull(${_qk},$results,"document.syspublishdate desc"))
+
+<h2>$widgettitle</h2>
+<ul class="news-listing">
+	#foreach($con in $results)
+		<li>
+			<h4><a href="${con.fileasset.uri}?force_download=true">$!{con.title}</a></h4>
+			
+			#if($fieldstodisplay.contains('author') && $utilmethods.isset($con.metadata.author))
+				<span class="byline">$!{con.metadata.author}</span>
+			#end
+			
+			#if($fieldstodisplay.contains('publishdate') && $utilmethods.isset($con.syspublishdate))
+				<time datetime="$date.format('yyyy-mm-dd',$!con.syspublishdate)t$date.format('hh:mm:ss',$!con.syspublishdate)">
+					publish date: $date.format('mmmm dd, yyyy',$con.syspublishdate),
+				</time>
+			#end
+			
+			#if($fieldstodisplay.contains('description'))
+				#if($utilmethods.isset($con.description1))
+					<p>$utilmethods.prettyshortenstring("$con.description1", 200)</p>
+				#elseif($utilmethods.isset($con.description))
+					<p>$utilmethods.prettyshortenstring("$con.description", 200)</p>
+				#end
+			#end
+		</li>
+	#end
+</ul>

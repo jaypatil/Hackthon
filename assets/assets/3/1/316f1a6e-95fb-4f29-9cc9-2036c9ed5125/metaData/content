@@ -1,0 +1,20 @@
+#set($myjson = $json.fetch("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quote%20where%20symbol%20in%20(%22%5egspc%22%2c%22%5eixic%22%2c%22aapl%22%2c%22goog%22%2c%22msft%22)&format=json&diagnostics=true&env=store%3a%2f%2fdatatables.org%2falltableswithkeys"))
+
+<div class="row">
+	#foreach($stock in $myjson.query.results.quote)
+		<div class="col-sm-2">
+			<b>$stock.symbol</b><br>
+			#if($stock.symbol == "^gspc")
+				s&amp;p 500
+			#elseif($stock.symbol == "^ixic") 
+				nasdaq
+			#else
+				$stock.symbol
+			#end
+			<br>
+			$stock.changeinpercent<br>
+		</div>
+	#end
+</div>
+
+

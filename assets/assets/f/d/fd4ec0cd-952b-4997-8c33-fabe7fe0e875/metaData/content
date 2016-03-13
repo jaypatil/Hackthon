@@ -1,0 +1,105 @@
+#set($categorylist = "")
+#set($nowsers= $date.format('yyyymmddhhmmss', $date.getdate()))
+#foreach($con in $urlmapcontent.topic)
+	#set($categorylist = "$categorylist $con.categoryvelocityvarname")
+#end
+
+
+
+<!-- related news -->
+	#set($_qk = "+structurename:news
+	+(conhost:$host.identifier conhost:system_host)
+	+($categorylist)
+	-news.title:*${urlmapcontent.title}*
+	+news.syspublishdate:[19001010101000 to $nowsers]")
+  
+    #set($cons = $dotcontent.pull(${_qk},10,"news.syspublishdate desc"))
+    
+    <h3>related news</h3>  
+	#foreach($con in $cons)
+		<div class="media">
+			<div class="media-heading"><a href="/news/$con.urltitle">$!{con.title}</a></div>
+			<div class="media-subheading">
+				<time datetime="$date.format('yyyy-m-dd',$con.syspublishdate)">$date.format('mmm dd yyyy', ${con.syspublishdate}) at $date.format('hh:mm z', $!{con.syspublishdate})</time>
+			</div>
+		</div>
+		<hr>
+	#end
+
+
+<!-- related media --> 
+	#set($_qk = "+structurename:media
+	+(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host)
+	+($categorylist)
+	+media.syspublishdate:[19001010101000 to $nowsers]")
+  
+	#set($cons = $dotcontent.pull(${_qk},9,"media.syspublishdate desc"))
+    
+    <h3>related media</h3>
+	 #foreach($con in $cons)
+		## set file path for link
+		#if ($utilmethods.isset($con.file.rawuri))
+			#set ($filepath = "$con.file.rawuri/$con.file.name")
+		#else
+			#set ($filepath = $con.url)
+		#end
+      
+		<div class="media">
+						    
+				#if ($utilmethods.getfileextension($filepath) != 'mp3')
+					
+					##if image	
+					#if ($utilmethods.isimage($filepath))
+						<div class="media-badge pull-left">
+							#if ($utilmethods.isset($con.thumbnail.rawuri))
+								<a href='$filepath' class='js-fancybox-img thumb image-thumb' title='$!{con.title}'><img src='/contentasset/image/$con.inode/thumbnail/byinode/1/filter/resize/resize_h/60/resize_w/120' alt='$!{con.title}'></a>
+							#elseif($utilmethods.isimage($filepath))
+								<a href='$filepath' class='js-fancybox-img thumb image-thumb' title='$!{con.title}'><img src='/contentasset/image/$con.inode/file/byinode/1/filter/resize/resize_h/60/resize_w/120' alt='$!{con.title}' /></a>
+							#end
+						</div>
+						
+					##if video
+					#elseif ($utilmethods.isset(${con.filebinaryfileuri}))
+						#if ($utilmethods.isset(${con.thumbnailbinaryfileuri}))
+							<div class="media-badge pull-left">
+								<a href="#$!{con.contentidentifier}" class="js-fancybox-media-file thumb media-thumb" title="$!{con.title}">
+									<img src='/contentasset/image/$con.inode/thumbnail/byinode/1/filter/resize/resize_h/80/resize_w/120' alt='$!{con.title}'>
+								</a>
+							</div>
+						#end
+					#else
+						#if ($utilmethods.isset(${con.thumbnailbinaryfileuri}))
+							<div class="media-badge pull-left">
+								<a href="$!{filepath}" class="js-fancybox-media-link thumb media-thumb" title="$!{con.title}">
+									<img src='/contentasset/image/$con.inode/thumbnail/byinode/1/filter/resize/resize_h/80/resize_w/120' alt='$!{con.title}'>
+								</a>
+							</div>
+						#end
+					#end
+						
+				#else
+					#if ($utilmethods.isset(${con.thumbnailbinaryfileuri}))
+						<p>mp3</p>
+						<div class="media-badge pull-left">
+							<a href="#$!{con.contentidentifier}" class="js-fancybox-media-file thumb media-thumb" title="$!{con.title}">
+								<img src='/contentasset/image/$con.inode/thumbnail/byinode/1/filter/resize/resize_h/80/resize_w/120' alt='$!{con.title}'>
+							</a>
+						</div>
+					#end
+					<div class="hidden">
+						<audio id="$!{con.contentidentifier}" class="video-js vjs-default-skin vjs-big-play-centered"
+							controls preload="auto" width="640" height="480">
+							<source src="$!{con.filepath}" type='audio/$!{utilmethods.getfileextension($filepath)}' />
+						</audio>
+					</div>
+				#end
+
+			<div class="media-body">
+				<div class="media-heading"><a href='$filepath' class='js-fancybox-media-link'>$con.title</a></div>
+				<div class="media-subheading">$date.format('mmm dd yyyy',$con.syspublishdate) at $date.format('hh:mm z',$con.syspublishdate)</div>
+				<div class="media-description">$utilmethods.prettyshortenstring("$con.description", 100)</div>
+			</div>
+		</div>
+		<hr>
+    #end
+

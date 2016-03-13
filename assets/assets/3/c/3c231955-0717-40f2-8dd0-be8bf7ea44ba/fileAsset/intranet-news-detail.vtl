@@ -1,0 +1,7 @@
+#set ($id = "$!{request.getParameter('newsId')}")
+
+#if($id != "")
+	$id
+#else
+	Show News Listing
+#end

@@ -1,0 +1,7 @@
+// resize anything
+
+.resizable(@direction) {
+  resize: @direction; // options: horizontal, vertical, both
+  overflow: auto; // per css3 ui, `resize` only applies when `overflow` isn't `visible`
+}
+

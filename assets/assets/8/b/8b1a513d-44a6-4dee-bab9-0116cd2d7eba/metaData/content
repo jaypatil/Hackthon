@@ -1,0 +1,153 @@
+//
+// header
+// --------------------------------------------------
+// all the styles for the header of the theme
+// include navigation and search
+
+.header-logo {
+    img {
+        margin-top: 10px;
+        @media (max-width: @grid-float-breakpoint) {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+    }
+}
+
+.navbar-brand {
+  height: auto;
+  padding: 0 0;
+}
+
+
+.header-tools {
+   background-color: @brand-primary;
+   
+   .header-tools-wrapper {
+     font-size: @font-size-small;
+     text-align: right;
+     padding: 0;
+     a {
+       color: lighten(@brand-primary, 55%);
+       text-decoration: none;
+       display: inline-block;
+       padding: 3px 15px;
+     }
+   }
+}
+
+.searchform-header {
+  
+  display: inline-block;
+  margin: 20px 0px 3px 0px;
+  vertical-align: middle;
+  width: 200px;
+
+  .btn {
+    padding: 2px 7px;
+    background-color: lighten(@brand-primary, 15%);
+    color: lighten(@brand-primary, 50%);
+  }
+  
+  input[type="text"],
+  input[type="submit"] {
+      font-size: @font-size-small;
+  }
+  input[type="text"] {
+    background: @white;
+    border: 1px solid @gray-dark;
+    color: @gray;
+    padding: 2px 5px;
+    border-radius: @border-radius-base;
+  }
+}
+
+//
+// navs
+// --------------------------------------------------
+// extending classes from /bootstrap/less/navs.less
+
+.header-navbar {
+    @media (max-width: @screen-tablet) {
+        padding: 0;
+        width: auto;
+    }
+    
+    .navbar-toggle {
+        margin: @padding-base-vertical @padding-base-horizontal;
+    }
+    
+    .nav {
+        margin: 8px 0 0 0;
+
+        @media (min-width: @grid-float-breakpoint) {
+            float: right;
+        }
+
+        & > li {
+            border-left: 1px solid lighten(@brand-primary, 30%);
+            @media (max-width: @grid-float-breakpoint) {
+              border: 0px;
+            }
+        }
+    }
+    .navbar-nav > li > a {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      padding-left: 25px;
+      padding-right: 25px;
+      &:hover {
+         background-color: lighten(@brand-primary, 60%);
+      }
+    }
+}
+
+
+//
+// navbars
+// --------------------------------------------------
+// extending classes from /bootstrap/less/navbar.less
+
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0px;
+    min-height: 25px;
+
+    @media (min-width: @screen-tablet) {
+        margin-bottom: @navbar-margin-bottom;
+    }
+}
+
+.navbar-inverse {
+  background-color: @white;
+  border: 0 solid @brand-primary;
+}
+
+
+.collapse.in, .collapsing {
+  position: absolute;
+  background: @brand-secondary;
+  width: 280px;
+  right: 0;
+  margin-right: 0;
+  padding-right: 0;
+  padding-left: 0;
+  table{
+    margin-bottom: 0;
+    width: 100%;
+    td {
+      width: 50%;
+      padding: 0;
+      a {
+        display: block;
+        padding: 10px 5px;
+        text-align: center;
+        color: @white;
+        background: #00a5da;
+      }
+    }
+  }
+}
+
+
+

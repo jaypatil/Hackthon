@@ -1,0 +1,57 @@
+<title>$dotPageContent.title</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="language" content="english">
+<meta name="application-name" content="dotCMS dotcms.com">
+<meta name="description" content="$dotPageContent.seodescription">
+<meta name="keywords" content="$dotPageContent.seokeywords">
+<meta name="author" content="$dotPageContent.pagemetadata">
+<meta name="copyright" content="dotCMS LLC">
+<meta name="email" content="info@dotcms.com">
+<meta name="creationDate" content="2014-09-17">
+<meta name="lastModifiedDate" content="$dotPageContent.modDate">
+
+<!-- Touch Icons -->
+<link rel="shortcut icon" href="http://dotcms.com/favicon.ico" type="image/x-icon">
+
+<!-- CSS Styles -->
+<link rel="stylesheet" href="/DOTLESS${dotTheme.path}less/main.css">
+<link rel="stylesheet" href="${dotTheme.path}css/animate.css">
+
+<!-- Web Fonts -->
+<link href='http://fonts.googleapis.com/css?family=Merriweather:400,300' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+
+<!-- JavaScript -->
+<script src="${dotTheme.path}js/jquery-2.1.1.min.js"></script>
+<script src="${dotTheme.path}js/bootstrap.min.js"></script>
+<script src="${dotTheme.path}js/jquery.stellar.min.js"></script>
+<script src="${dotTheme.path}js/jquery.smooth-scroll.min.js"></script>
+<script src="${dotTheme.path}js/wow.min.js"></script>
+<script src="${dotTheme.path}js/toc.js"></script>
+
+
+<script type="text/javascript">  
+    $(function(){
+    	$('#toc').toc();
+    	
+		$.stellar({
+			horizontalScrolling: false,
+			verticalOffset: 0
+		});
+		
+		$('.nav a').smoothScroll({
+			easing: 'swing',
+			speed: 800
+		});
+	});
+	
+	$('.carousel').carousel({
+	  interval: 2000,
+	  pause: "hover",
+	  wrap:	 false
+	})
+	
+	new WOW().init();
+</script>

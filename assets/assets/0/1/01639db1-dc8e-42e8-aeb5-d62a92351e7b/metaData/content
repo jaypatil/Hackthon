@@ -1,0 +1,119 @@
+#set($categorylist = "")
+
+#foreach($con in $urlmapcontent.topic)
+  #set($categorylist = "$categorylist $con.categoryvelocityvarname")
+#end
+
+#set($nowsers= $date.format('yyyymmddhhmmss', $date.getdate()))
+    
+  <!-- story photo -->
+  #if ($utilmethods.isset($urlmapcontent.imagebinaryfileuri))
+    <div class="p3">
+      <figure>
+        <a href="$urlmapcontent.imagebinaryfileuri/$urlmapcontent.imagebinaryfiletitle" class="hoverimage prettyphoto" title="">
+          <img src="/contentasset/resize-image/$urlmapcontent.identifier/image/w/294" alt="$!urlmapcontent.title, $!urlmapcontent.caption" />
+        </a>
+      </figure>
+      #if ($utilmethods.isset($urlmapcontent.caption))
+        <figcaption>$urlmapcontent.caption</figcaption>
+      #end
+      
+    </div>
+  #end
+
+
+  <!-- related news -->
+    #set($_qk = "+structurename:news
+      +(conhost:$host.identifier conhost:system_host)
+      +($categorylist)
+      -news.title:*${urlmapcontent.title}*
+      +news.syspublishdate:[19001010101000 to $nowsers]")
+  
+    #set($cons = $dotcontent.pull(${_qk},10,"news.syspublishdate desc"))
+    
+    <h3>related news</h3>  
+	#foreach($con in $cons)
+		<div class="media">
+			<div class="media-heading"><a href="/news/$con.urltitle">$!{con.title}</a></div>
+			<div class="media-subheading" datetime="$date.format('yyyy-m-dd',$con.syspublishdate)">$date.format('mmmm dd',$con.syspublishdate)</div>
+		</div>
+	#end
+    
+
+
+  <!-- related media --> 
+    #set($_qk = "+structurename:media
+      +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host)
+      +($categorylist)
+      +media.syspublishdate:[19001010101000 to $nowsers]")
+  
+    #set($cons = $dotcontent.pull(${_qk},9,"media.syspublishdate desc"))
+    
+    <h3>related media</h3>
+    <div class="media">
+      
+    #foreach($con in $cons)
+      ## set file path for link
+      #if ($utilmethods.isset($con.file.rawuri))
+        #set ($filepath = "$con.file.rawuri/$con.file.name")
+      #else
+        #set ($filepath = $con.url)
+      #end
+      
+      
+      ## set thumbnail image
+      #if ($utilmethods.isset($con.thumbnail.rawuri))
+        #set ($thumbnail = "<img src='/contentasset/image/$con.inode/thumbnail/byinode/1/filter/resize/resize_h/60/resize_w/75' alt='$!{con.title}' />")
+      #elseif($utilmethods.isimage($filepath))
+        #set ($thumbnail = "<img src='/contentasset/image/$con.inode/file/byinode/1/filter/resize/resize_h/60/resize_w/75' alt='$!{con.title}' />")
+      #else
+        #set ($thumbnail = "<img src='/images/photos/willathishomeoffice.jpg' width='75' alt='$!{con.title}' />")
+      #end
+      
+      
+      ## set hover class
+      #if ($utilmethods.isimage($filepath))
+        #set($class = "hoverimage")
+      #else
+        #set($class = "hovervideo")
+      #end
+  
+  
+      <li>
+        <div class="media-thumbnail">
+          #if ($utilmethods.getfileextension($filepath) != 'mp3')
+            <a href="$filepath" class="$class prettyphoto" title="$!{con.title}">
+              ${thumbnail}
+            </a>
+          #else
+            <a href="#playerdiv" class="$class prettyphoto" title="$!{con.title}">
+              ${thumbnail}
+            </a>
+  
+            <div id="playerdiv" style="display:none;">
+            <div style="width:425px;height:30px;margin:0 auto;padding:20px;">
+                <object class="playerpreview" type="application/x-shockwave-flash" data="/images/prettyphoto/player_mp3.swf" width="400" height="40">
+                    <param name="movie" value="/images/prettyphoto/player_mp3.swf" />
+                    <param name="flashvars" value="mp3=$filepath&autoplay=1&showstop=1&showvolume=1&bgcolor1=4287b5&bgcolor2=0b698f" />
+                  </object>
+            </div>
+            </div>
+          #end
+        </div>
+        <div class="media-details">
+          <span class="media-title">
+            #if ($utilmethods.isset($con.averagerating))
+              <span class="star-rating pct$!math.floor($!{con.averagerating}) normaltip" title="$!math.roundto(2, $!{con.averagerating})">&nbsp;</span>
+            #else
+              <span class="star-rating pct0 normaltip" title="not rated">&nbsp;</span>
+            #end
+            $con.title
+          </span>
+          <time class="media-date" datetime="$date.format('yyyy-mm-dd',$!con.syspublishdate)t$date.format('hh:mm:ss',$!con.syspublishdate)">$date.format('mmm dd yyyy',$con.syspublishdate) at $date.format('hh:mm z',$con.syspublishdate)</time>
+          <span class="media-description">$utilmethods.prettyshortenstring("$con.description", 100)</span>
+        </div>
+        <div class="clear"></div>
+      </li>
+    #end
+    </ul>
+  </div>

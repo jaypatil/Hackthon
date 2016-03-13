@@ -1,0 +1,73 @@
+
+		
+			
+			
+				
+					#if(!$user)
+						create an account
+						login
+					#else
+						my account
+						logout
+					#end
+					
+						
+						
+					
+
+				
+
+			
+
+
+    	
+            
+                
+                    #if($utilmethods.isset($!user) && $cmsuser.isuserrole($user, "intranet") && !($edit_mode))
+                      
+                    #else
+                      
+                    #end
+                
+
+                
+                    
+                        
+                        
+                        
+                    
+                
+
+            
+
+            
+                
+
+                    #set($list = $navtool.getnav("/"))
+                    #foreach($n in $list)
+                        #set($children = $n.children)
+                        #if($children && $children.size() > 0)
+                            	
+                                ${n.title} 
+                                
+
+                                    #foreach($ch in $children)
+                                        
+	${ch.title}
+
+
+                                    #end
+                                
+                            
+                        #else
+                            	${n.title}
+
+
+                        #end
+                    #end
+                
+            
+        
+
+    
+

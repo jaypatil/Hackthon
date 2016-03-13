@@ -1,0 +1,19 @@
+.youtube-widget {
+    border-bottom: dashed 1px @gray-lighter;
+    border-top: dashed 1px @gray-lighter;
+    margin-bottom: @padding-base-vertical * 2;
+    margin-top: @padding-base-vertical * 2;
+    padding: @padding-base-vertical * 2 0;
+    
+    .make-row();
+
+    article {
+        .make-sm-column(12);
+    }
+
+    @media (min-width: @screen-tablet) {
+      border-top: none;
+      margin-top: 0;
+      padding-top: 0;
+    }
+}

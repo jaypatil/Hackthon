@@ -1,0 +1,15 @@
+directions
+
+
+	
+
+
+
+
+	$urlmapcontent.country.selectvalue
+
+	$urlmapcontent.address1
+
+	$urlmapcontent.address2
+	$urlmapcontent.city, $urlmapcontent.state.selectvalue $urlmapcontent.zip
+

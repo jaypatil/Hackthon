@@ -1,0 +1,148 @@
+##important
+#parse ("preprocess.vl")
+##important
+
+
+
+
+
+ 
+    #if($dottheme.htmlhead)
+        #dotparse("${dottheme.path}html_head.vtl")
+    #end
+
+
+#set($utilclass = $pagetitle.tolowercase().replace(' ', '-'))
+
+
+
+    #if($dotthemelayout.header)
+        #dotparse("${dottheme.path}header.vtl")
+    #end
+
+    
+        
+        ##main column
+        #set ($maincolumn = $dotthemelayout.body)
+
+        ##sidebar
+        #set ($sidebar = $dotthemelayout.sidebar)
+
+        ############################
+        ## sidebar - (if present) ##
+        ############################
+        #if ($sidebar)
+
+            
+
+            #if ($sidebar.widthpercent == 20)
+                #set ($sidebarcolumn1span = "col-sm-2")
+                #set ($sidebarcolumn2span = "col-sm-10")
+            #elseif ($sidebar.widthpercent == 30)
+                #set ($sidebarcolumn1span = "col-sm-3")
+                #set ($sidebarcolumn2span = "col-sm-9")
+            #elseif ($sidebar.widthpercent == 40)
+                #set ($sidebarcolumn1span = "col-sm-4")
+                #set ($sidebarcolumn2span = "col-sm-8")
+            #else
+                #set ($sidebarcolumn1span = "")
+                #set ($sidebarcolumn2span = "")
+            #end
+
+            #if ($sidebar.location == "left")
+                
+                    ##draw the column content
+                    $render.eval($sidebar.draw())
+                
+
+                
+            #else
+                
+            #end
+
+        #end
+
+        #########################################
+        ## adding the rows for the main column ##
+        #########################################
+        #if ($maincolumn.rows)
+            #set($count = 0)
+            #foreach($row in $maincolumn.rows)
+                #set($count = $count + 1)
+
+                ##every row will have a number of columns, lets add one by one using bootstrap grid layout
+                #foreach($column in $row.columns)
+                    #if($velocitycount == 1)
+                    
+                        
+                    #end
+
+                    ##now..., depending on the width of the column lets try to use bootstrap layout styles
+                    #if ($column.widthpercent == 100)
+                        #set ($currentcolumnspan = "col-sm-12")
+                    #elseif ($column.widthpercent == 75)
+                        #set ($currentcolumnspan = "col-sm-9")
+                    #elseif ($column.widthpercent == 66)
+                        #set ($currentcolumnspan = "col-sm-8")
+                    #elseif ($column.widthpercent == 50)
+                        #set ($currentcolumnspan = "col-sm-6")
+                    #elseif ($column.widthpercent == 33)
+                        #set ($currentcolumnspan = "col-sm-4 sidebar")
+                    #elseif ($column.widthpercent == 25)
+                        #set ($currentcolumnspan = "col-sm-3")
+                    #else
+                        #set ($currentcolumnspan = "")
+                    #end
+
+                    
+                        ##draw the column content
+                        $render.eval($column.draw())
+                    
+
+
+                    #if($velocitycount == $row.columns.size())
+                        
+
+                    
+
+                    #end
+                #end
+            #end
+        #end
+
+        ############################
+        ## sidebar - (if present) ##
+        ############################
+        #if ($sidebar)
+            #if ($sidebar.location == "left")
+                
+
+            #else
+                
+
+                
+                    ##draw the column content
+                    $render.eval($sidebar.draw())
+                
+
+            #end
+            
+
+        #end
+
+        
+
+
+    
+
+
+    #if($dotthemelayout.footer)
+        #dotparse("${dottheme.path}footer.vtl")
+    #end
+
+	powered by dotcms - the leading open source java content management system
+
+
+##important
+#parse ("postprocess.vl")
+##important

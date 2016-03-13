@@ -1,0 +1,186 @@
+#set($eventidentifier = $request.getparameter('id'))
+#if(!$utilmethods.isset($eventidentifier))
+   #if($urlmapcontent)
+      #set($eventidentifier = $urlmapcontent.identifier)
+   #end
+#end
+   
+#set($recurrencestartdate= $request.getparameter('recurrencestartdate'))
+#set($recurrenceenddate= $request.getparameter('recurrenceenddate'))
+
+
+#if($utilmethods.isset($recurrencestartdate))
+  #set($startdatev= $date.todate('dd/mm/yyyy hh:mm:ss',$recurrencestartdate))
+#else
+  #if($utilmethods.isset($content.startdate))
+   #set($startdatev= $content.startdate)
+  #else
+     #set($eventvar = $calendar.find($eventidentifier))
+     #set($startdatev= $eventvar.startdate)
+  #end 
+#end  
+
+#if($utilmethods.isset($recurrenceenddate))
+  #set($enddatev= $date.todate('dd/mm/yyyy hh:mm:ss',$recurrenceenddate))
+#else
+  #if($utilmethods.isset($content.enddate))
+    #set($enddatev= $content.enddate) 
+  #else
+     #set($eventvar = $calendar.find($eventidentifier))
+     #set($enddatev= $eventvar.enddate)
+  #end  
+#end
+  
+
+
+
+#if($utilmethods.isset($eventidentifier))
+  #getcontentmapdetail($eventidentifier)
+  #if($utilmethods.isset($content.identifier))
+  #if($utilmethods.isset($recurrencestartdate) && $utilmethods.isset($recurrenceenddate) )
+  #set($vcalendarurl = "/dotcms/downloadvcalendar?id=$content.identifier&recurrencestartdate=$date.format('dd/mm/yyyy hh:mm:ss',$startdatev)&recurrenceenddate=$date.format('dd/mm/yyyy hh:mm:ss',$enddatev)")
+#else
+  #set($vcalendarurl = "/dotcms/downloadvcalendar?id=${content.identifier}")
+#end
+
+    <a href="$vcalendarurl" class="btn btn-default btn-sm event-add-calendar pull-right">add to calendar</a>
+    <div class="add-this event-detail-add-this header-add-this pull-right">
+      #dotparse('//shared/vtl/widgets/full-site/add-this.vtl')
+    </div>
+    #editcontentlet($content.inode)
+    <h1 class="event-detail-title">$content.get('title')</span></h1>
+    <dl class="dl-horizontal event-detail-meta">
+      <div class="item-line">
+        <dt>when:</dt>
+        #set($startdate = $date.format('mmmm d, h:mm a', ${startdatev}))
+        #set($enddate = $date.format('mmmm d, h:mm a', ${enddatev}))
+        #if($startdate == $enddate)
+          <dd><time>$startdate</time></dd>
+        #else
+          #if($date.format('eee, mmmm d yyyy',$startdatev)==$date.format('eee, mmmm d yyyy',$enddatev))
+            <dd>    
+              #if($date.format('h:mm a',$startdatev)=='12:00 am' && $date.format('h:mm a',$enddatev)=='11:59 pm' )
+                $date.format('mmmm d', ${enddatev}) <small>(all day event)</small>
+              #else
+                $startdate - $date.format('h:mm a',$enddatev) 
+              #end
+            </dd>
+          #else
+            <dd>$startdate - $enddate</dd>
+          #end
+        #end
+      </div>
+      #if($utilmethods.isset($content.link))
+        <div class="item-line">
+          <dt>link:</dt>
+          <dd>
+            #if(!$content.get('link').startswith('/') && !$content.get('link').startswith('http'))
+              #set($linkurl = "http://$content.get('link')")
+            #else
+              #set($linkurl = "$content.get('link')")
+            #end
+            <a href="$linkurl" target="_blank" class="external">$content.get('link')</a>
+          </dd>
+        </div>
+      #end
+
+      #if($utilmethods.isset($content.tags))
+        <div class="item-line">
+          <dt>tagged:</dt>
+          <dd>
+            #set($tagsspplited = $content.tags.split(','))
+            #foreach($tag in $tagsspplited)#if($velocitycount > 1),#end
+            <a href="/news-events/events/index.html?date=${date.format('yyyy-mm-dd',$startdatev)}&tag=$tag">$tag</a>
+            #end
+          </dd>
+        </div>
+      #end
+
+      #if($utilmethods.isset($content.file))
+      <div class="item-line">
+        <dt>files:</dt>
+        <dd><a href="$content.filefileuri">$content.filefilename</a></dd>
+      </div>
+      #end
+
+      #if($listtool.size($content.contentletcategories) > 0)
+      <div class="item-line">
+        <dt>filed under:</dt>
+        <dd>
+          #foreach($catinode in $content.contentletcategories)#if($velocitycount > 1),#end
+            #set($category = $categories.getcategorybyinode($catinode))
+            <a href="/news-events/events.html?date=${date.format('yyyy-mm-dd',$startdatev)}&cat=$category.categoryvelocityvarname">$category.categoryname</a>
+          #end
+        </dd>
+      </div>
+      #end
+    </dl>
+
+    #if($utilmethods.isset($content.image))
+      <img src="/resize_image?path=$content.imageimageuri&w=150" alt="$content.title" class="thumb" />
+    #end
+
+    #if($utilmethods.isset($content.description))
+      $content.description
+    #end
+
+
+    <!-- related events -->
+    #set($datepart = $date.format("yyyymmdd", $content.startdate))
+    #set($fromdate = $utilmethods.adddays($date.todate("yyyymmddhhmmss", "${datepart}000000"), -7))
+    #set($todate = $utilmethods.adddays($date.todate("yyyymmddhhmmss", "${datepart}235959"), 7))
+    #set($eventslist = $calendar.findrelatedevents($eventidentifier, $fromdate, $todate))
+    
+    #set($hasrelated = false)
+    #if($eventslist.size()>0)
+      <div class="events-related" id="related-events">
+        <h3>related events</h3>
+        <ul class="media-list media-list-extend event-listing">
+          #foreach($event in $eventslist)
+            #if($event.identifier != $eventidentifier && $velocitycount < 6)
+              #set($hasrelated = true)
+              <li class="media">
+                #editcontentlet($event.inode)
+                <article>
+                  <div class="pull-left media-object">
+                    <div class="event-day">
+                      <span class="month">$date.format('mmm',$event.startdate)</span>
+                      <span class="day">$date.format('dd',$event.startdate)</span>
+                    </div>
+                  </div>
+                  <div class="media-body">
+                    <div class="post-info">
+                      <time class="date" datetime="2012-06-19">
+                        #if("$date.format('ha',$event.startdate)" != "12am")
+                          <strong>$date.format('ha',$event.startdate)</strong> |
+                        #end
+                        $date.format('eeee, mmmm d, yyyy',$event.startdate)
+                      </time>
+                    </div>
+                    <h4 class="media-heading event-title"><a href="#">
+                      #if($event.recurs)
+                        #set($eventid = $event.identifier.substring(0,$event.identifier.indexof('-rec')))
+                        <a href="/news-events/events/$event.urltitle?id=$eventid&recurrencestartdate=$date.format('dd/mm/yyyy hh:mm:ss',$event.startdate)&recurrenceenddate=$date.format('dd/mm/yyyy hh:mm:ss',$event.enddate)">$event.title</a>
+                      #else
+                        <a href="/news-events/events/$event.urltitle?id=$event.identifier">$event.title</a>
+                      #end
+                    </h4>
+                    <div class="summary">
+                      <p>$utilmethods.shortenstring("$event.description", 220)</p>
+                    </div>
+                  </div>
+                </article>
+              </li>
+            #end
+          #end
+        </ul>
+      </div>
+    #end
+    #if(!$hasrelated)
+      <p>there are no related events.</p>
+    #end
+    
+  #end
+#else
+  <div class="alert alert-info">no events found, go to the <a href="/news-events/events/">calendar</a> and click in a event</div>
+#end

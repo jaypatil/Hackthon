@@ -1,0 +1,139 @@
+
+		
+			
+				
+					#if(!$user)
+						create an account
+						login
+					#else
+						my account
+						logout
+					#end
+					find a branch
+					contact us
+					
+					
+						
+						
+					
+
+				
+
+			
+
+		
+
+	
+
+    
+		
+			
+				 
+                     
+                
+
+                
+                    
+                        
+                        
+                        
+                    
+                
+
+            
+
+            
+				
+
+                	
+                    #set($list = $navtool.getnav("/"))
+                    #foreach($n in $list)
+                        #set($children = $n.children)
+                        #if($children && $children.size() > 0)
+                            	
+                                ${n.title} 
+                                
+
+                                    #foreach($ch in $children)
+                                        
+	${ch.title}
+
+
+                                    #end
+                                
+                            
+                        #else
+                            	${n.title}
+
+
+                        #end
+                    #end
+                
+                
+                ## add reorder menu button
+                #if ($edit_mode)
+				  #set ($publish_permission = $pageapi.canuserpublish($htmlpage_identifier, false))
+				  #set ($startfrompath = $nav.getstartfrompath(1, $request))
+				  #set ($folder = $folderapi.findcurrentfolder($startfrompath, $host))
+				  #set ($menuid = $folder.inode)
+				  
+					  
+					    
+					    
+					    
+					    
+					    
+					    
+					    
+					    #if ($publish_permission)
+						    
+						    	
+						      	
+						      		 
+						      	
+						      	
+						      		 
+						      	
+						    
+
+					    #end
+					  
+
+
+					  $nav.increaseformcount()
+				  
+				#end
+				
+                
+
+
+                		#if(!$user)
+		            			create an account	login
+
+
+		            	#else
+		            			my account	logout
+
+
+		            	#end
+                	
+                		
+                			
+			        			
+									
+									
+								
+
+			                
+
+                		
+
+
+            	
+               
+            	
+            
+        
+
+    
+

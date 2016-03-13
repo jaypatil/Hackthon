@@ -1,0 +1,43 @@
+<div class="document-search">
+  <form id="doc-search" class="js-doc-search">
+    <div class="input-group search-field">
+      <input type="text" class="form-control js-search-text">
+      <span class="input-group-btn">
+        <button class="btn btn-primary btn-document-search js-submit-button" type="button"><i class="fa fa-search"></i></button>
+      </span>
+    </div><!-- /search-field -->
+    <div class="btn-group btn-group-justified search-type" data-toggle="buttons">
+      <label class="btn btn-default btn-xs active">
+        <input type="radio" name="options" id="all" checked> all
+      </label>
+      <label class="btn btn-default btn-xs">
+        <input type="radio" name="options" id="image"> image
+      </label>
+      <label class="btn btn-default btn-xs">
+        <input type="radio" name="options" id="video"> video
+      </label>
+      <label class="btn btn-default btn-xs">
+        <input type="radio" name="options" id="document"> docs
+      </label>
+    </div>
+  </form>
+  <div class="panel panel-default search-filter topics js-filter-items">
+    <div class="panel-heading"><h4 class="panel-title">topics</h4></div>
+    <div class="list-group">
+      #foreach($con in $categories.getchildrencategoriesbykey("topic"))
+        <a href="#" id="$!{con.categoryvelocityvarname}" data-topic="$!{con.categoryvelocityvarname}" class="list-group-item">$!{con.categoryname}</a>
+      #end
+    </div>
+  </div>
+  <div class="panel panel-default search-filter tags js-filter-items">
+    <div class="panel-heading"><h4 class="panel-title">tags</h4></div>
+    <div class="list-group">
+      #set($tagcloudstructures = $webapi.splitstring("document", ","))
+      #set($tagscount = $macro.gettagscount($tagcloudstructures, 99, $ignoredtags, $request))
+      #set($tagsorted = $macro.sortalpha($tagscount.keyset()))
+      #foreach($tag in $tagsorted)
+        <a href="#" id="$!{tag}" data-tag="$!{tag}" class="list-group-item">$!{tag}</a>
+      #end
+    </div>
+  </div>
+</div>

@@ -1,0 +1,225 @@
+// vendor prefixes
+//
+// all vendor mixins are deprecated as of v3.2.0 due to the introduction of
+// autoprefixer in our gruntfile. they will be removed in v4.
+
+// - animations
+// - backface visibility
+// - box shadow
+// - box sizing
+// - content columns
+// - hyphens
+// - placeholder text
+// - transformations
+// - transitions
+// - user select
+
+
+// animations
+.animation(@animation) {
+  -webkit-animation: @animation;
+       -o-animation: @animation;
+          animation: @animation;
+}
+.animation-name(@name) {
+  -webkit-animation-name: @name;
+          animation-name: @name;
+}
+.animation-duration(@duration) {
+  -webkit-animation-duration: @duration;
+          animation-duration: @duration;
+}
+.animation-timing-function(@timing-function) {
+  -webkit-animation-timing-function: @timing-function;
+          animation-timing-function: @timing-function;
+}
+.animation-delay(@delay) {
+  -webkit-animation-delay: @delay;
+          animation-delay: @delay;
+}
+.animation-iteration-count(@iteration-count) {
+  -webkit-animation-iteration-count: @iteration-count;
+          animation-iteration-count: @iteration-count;
+}
+.animation-direction(@direction) {
+  -webkit-animation-direction: @direction;
+          animation-direction: @direction;
+}
+.animation-fill-mode(@fill-mode) {
+  -webkit-animation-fill-mode: @fill-mode;
+          animation-fill-mode: @fill-mode;
+}
+
+// backface visibility
+// prevent browsers from flickering when using css 3d transforms.
+// default value is `visible`, but can be changed to `hidden`
+
+.backface-visibility(@visibility){
+  -webkit-backface-visibility: @visibility;
+     -moz-backface-visibility: @visibility;
+          backface-visibility: @visibility;
+}
+
+// drop shadows
+//
+// note: deprecated `.box-shadow()` as of v3.1.0 since all of bootstrap's
+// supported browsers that have box shadow capabilities now support it.
+
+.box-shadow(@shadow) {
+  -webkit-box-shadow: @shadow; // ios <4.3 & android <4.1
+          box-shadow: @shadow;
+}
+
+// box sizing
+.box-sizing(@boxmodel) {
+  -webkit-box-sizing: @boxmodel;
+     -moz-box-sizing: @boxmodel;
+          box-sizing: @boxmodel;
+}
+
+// css3 content columns
+.content-columns(@column-count; @column-gap: @grid-gutter-width) {
+  -webkit-column-count: @column-count;
+     -moz-column-count: @column-count;
+          column-count: @column-count;
+  -webkit-column-gap: @column-gap;
+     -moz-column-gap: @column-gap;
+          column-gap: @column-gap;
+}
+
+// optional hyphenation
+.hyphens(@mode: auto) {
+  word-wrap: break-word;
+  -webkit-hyphens: @mode;
+     -moz-hyphens: @mode;
+      -ms-hyphens: @mode; // ie10+
+       -o-hyphens: @mode;
+          hyphens: @mode;
+}
+
+// placeholder text
+.placeholder(@color: @input-color-placeholder) {
+  &::-moz-placeholder           { color: @color;   // firefox
+                                  opacity: 1; } // see https://github.com/twbs/bootstrap/pull/11526
+  &:-ms-input-placeholder       { color: @color; } // internet explorer 10+
+  &::-webkit-input-placeholder  { color: @color; } // safari and chrome
+}
+
+// transformations
+.scale(@ratio) {
+  -webkit-transform: scale(@ratio);
+      -ms-transform: scale(@ratio); // ie9 only
+       -o-transform: scale(@ratio);
+          transform: scale(@ratio);
+}
+.scale(@ratiox; @ratioy) {
+  -webkit-transform: scale(@ratiox, @ratioy);
+      -ms-transform: scale(@ratiox, @ratioy); // ie9 only
+       -o-transform: scale(@ratiox, @ratioy);
+          transform: scale(@ratiox, @ratioy);
+}
+.scalex(@ratio) {
+  -webkit-transform: scalex(@ratio);
+      -ms-transform: scalex(@ratio); // ie9 only
+       -o-transform: scalex(@ratio);
+          transform: scalex(@ratio);
+}
+.scaley(@ratio) {
+  -webkit-transform: scaley(@ratio);
+      -ms-transform: scaley(@ratio); // ie9 only
+       -o-transform: scaley(@ratio);
+          transform: scaley(@ratio);
+}
+.skew(@x; @y) {
+  -webkit-transform: skewx(@x) skewy(@y);
+      -ms-transform: skewx(@x) skewy(@y); // see https://github.com/twbs/bootstrap/issues/4885; ie9+
+       -o-transform: skewx(@x) skewy(@y);
+          transform: skewx(@x) skewy(@y);
+}
+.translate(@x; @y) {
+  -webkit-transform: translate(@x, @y);
+      -ms-transform: translate(@x, @y); // ie9 only
+       -o-transform: translate(@x, @y);
+          transform: translate(@x, @y);
+}
+.translate3d(@x; @y; @z) {
+  -webkit-transform: translate3d(@x, @y, @z);
+          transform: translate3d(@x, @y, @z);
+}
+.rotate(@degrees) {
+  -webkit-transform: rotate(@degrees);
+      -ms-transform: rotate(@degrees); // ie9 only
+       -o-transform: rotate(@degrees);
+          transform: rotate(@degrees);
+}
+.rotatex(@degrees) {
+  -webkit-transform: rotatex(@degrees);
+      -ms-transform: rotatex(@degrees); // ie9 only
+       -o-transform: rotatex(@degrees);
+          transform: rotatex(@degrees);
+}
+.rotatey(@degrees) {
+  -webkit-transform: rotatey(@degrees);
+      -ms-transform: rotatey(@degrees); // ie9 only
+       -o-transform: rotatey(@degrees);
+          transform: rotatey(@degrees);
+}
+.perspective(@perspective) {
+  -webkit-perspective: @perspective;
+     -moz-perspective: @perspective;
+          perspective: @perspective;
+}
+.perspective-origin(@perspective) {
+  -webkit-perspective-origin: @perspective;
+     -moz-perspective-origin: @perspective;
+          perspective-origin: @perspective;
+}
+.transform-origin(@origin) {
+  -webkit-transform-origin: @origin;
+     -moz-transform-origin: @origin;
+      -ms-transform-origin: @origin; // ie9 only
+          transform-origin: @origin;
+}
+
+
+// transitions
+
+.transition(@transition) {
+  -webkit-transition: @transition;
+       -o-transition: @transition;
+          transition: @transition;
+}
+.transition-property(@transition-property) {
+  -webkit-transition-property: @transition-property;
+          transition-property: @transition-property;
+}
+.transition-delay(@transition-delay) {
+  -webkit-transition-delay: @transition-delay;
+          transition-delay: @transition-delay;
+}
+.transition-duration(@transition-duration) {
+  -webkit-transition-duration: @transition-duration;
+          transition-duration: @transition-duration;
+}
+.transition-timing-function(@timing-function) {
+  -webkit-transition-timing-function: @timing-function;
+          transition-timing-function: @timing-function;
+}
+.transition-transform(@transition) {
+  -webkit-transition: -webkit-transform @transition;
+     -moz-transition: -moz-transform @transition;
+       -o-transition: -o-transform @transition;
+          transition: transform @transition;
+}
+
+
+// user select
+// for selecting text on the page
+
+.user-select(@select) {
+  -webkit-user-select: @select;
+     -moz-user-select: @select;
+      -ms-user-select: @select; // ie10+
+          user-select: @select;
+}
+

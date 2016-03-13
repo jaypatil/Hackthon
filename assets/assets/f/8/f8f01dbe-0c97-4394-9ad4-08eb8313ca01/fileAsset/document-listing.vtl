@@ -1,0 +1,42 @@
+#set($nowsers= $date.format('yyyyMMddHHmmss', $date.getDate()))
+#set($_qk = "+structureName:Document 
+	+(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:SYSTEM_HOST)
+	+(categories:research)
+	+Document.sysPublishDate:[19001010101000 TO $nowsers]
+	")
+
+#set($results = $dotcontent.pull(${_qk},$results,"Document.sysPublishDate desc"))
+
+<h2>$widgetTitle</h2>
+<div class="media">		
+	#if($fieldsToDisplay.contains('thumbnail')
+		
+	#end
+
+	<div class="media-body">
+	
+		#if($fieldsToDisplay.contains('title') && $UtilMethods.isSet($con.title))
+			<div class="media-heading">$!{title}</div>
+		#end
+		
+		#if($fieldsToDisplay.contains('author') && $UtilMethods.isSet($con.metaData.Author))
+			<span class="byLine">$!{con.metaData.Author}</span>
+		#end
+		
+		#if($fieldsToDisplay.contains('publishDate') && $UtilMethods.isSet($con.sysPublishDate))
+			<time datetime="$date.format('yyyy-MM-dd',$!con.sysPublishDate)T$date.format('hh:mm:ss',$!con.sysPublishDate)">
+				Publish Date: $date.format('MMMM dd, yyyy',$con.sysPublishDate),
+			</time>
+		#end
+		
+		#if($fieldsToDisplay.contains('description'))
+			#if($UtilMethods.isSet($con.description1))
+				<p>$UtilMethods.prettyShortenString("$con.description1", 200)</p>
+			#elseif($UtilMethods.isSet($con.description))
+				<p>$UtilMethods.prettyShortenString("$con.description", 200)</p>
+			#end
+		#end
+	</div>
+</div>
+
+<hr>

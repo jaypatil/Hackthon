@@ -1,0 +1,33 @@
+.news-listing {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  li {
+    margin-bottom: 8px;
+    display: block;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed @gray-light;
+  }
+  a {
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .news-title {
+    color: @brand-primary;
+    font-weight: 300;
+    font-size: 14px;
+    display: block;
+  }
+  .news-date {
+    color: @gray;
+    text-transform: uppercase;
+    font-size: @font-size-x-small;
+    font-weight: 300;
+    display: block;
+  }
+  .news-lead {
+    color: @gray;
+  }
+}

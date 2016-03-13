@@ -1,0 +1,9 @@
+// reset filters for ie
+//
+// when you need to remove a gradient background, do not forget to use this to reset
+// the ie filter for ie9 and below.
+
+.reset-filter() {
+  filter: e(%("progid:dximagetransform.microsoft.gradient(enabled = false)"));
+}
+

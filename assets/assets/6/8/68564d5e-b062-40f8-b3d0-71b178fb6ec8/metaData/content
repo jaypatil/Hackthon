@@ -1,0 +1,37 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="pull-right" style="margin-top: -5px;"><a href="/intranet/my-account/" class="btn btn-primary btn-xs">edit</a></div>
+        <h3 class="panel-title">my account</h3>
+	</div>
+	<div class="panel-body">
+
+		<!-- account details -->
+		<p>$!{user.prefix} $!{user.firstname} $!{user.lastname} $!{user.suffix}</p>
+	
+	
+	
+		<!-- mailing addresses -->
+		#set($addresses = $cmsuser.getaddresesbyuser($user))
+		#foreach($addr in $addresses )
+			
+			<h4>$addr.description</h4>
+			<address>
+				#if($utilmethods.isset($addr.street1))
+					$addr.street1<br>
+				#end
+				#if($utilmethods.isset($addr.street2))
+					$addr.street2<br>
+				#end
+				$addr.city, $addr.state $addr.zip
+			</address>
+			<p>
+				#if($utilmethods.isset($addr.phone))
+					<b>phone:</b> <a href="tel:$addr.phone">$addr.phone</a><br>
+				#end
+				#if($utilmethods.isset($addr.fax))
+					<b>fax:</b> <a href="tel:$addr.fax">$addr.fax</a>
+				#end
+			</p>
+		#end
+	</div>
+</div>

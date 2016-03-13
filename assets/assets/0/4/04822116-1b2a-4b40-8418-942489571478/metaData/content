@@ -1,0 +1,106 @@
+.location-listing {
+    .make-row();
+    font-size: 0;
+    list-style: none;
+    padding: 0;
+
+    a {
+        color: @text-color;
+        display: block;
+        text-decoration: none;
+
+        &:hover {
+            background: lighten(@gray-darker, 83%);
+
+            h3 {
+                color: @brand-secondary;
+            }
+
+            .show-map {
+                background: @brand-secondary;
+                color: @white;
+            }
+        }
+    }
+
+    h3 {
+        margin-top: 0;
+    }
+
+    li {
+        font-size: @font-size-base;
+    }
+
+    & > li {
+        display: inline-block;
+        margin-bottom: @padding-base-vertical * 2;
+        padding: 0 @grid-gutter-width / 2;
+        vertical-align: top;
+        width: 100%; // display 1 items per row on mobile
+
+        @media (min-width: @screen-tablet) {
+            width: percentage(4 / @grid-columns); // display 5 items per row on tablet and desktop
+        }
+
+        @media (min-width: @screen-lg-desktop) {
+            width: percentage(3 / @grid-columns); // display 6 items per row on large desktop
+        }
+
+        article {
+            border: solid 1px @gray-lighter;
+        }
+
+        img {
+            max-width: 100%;
+
+            @media (min-width: @screen-xs) and (max-width: @screen-tablet) {
+                display: inline-block;
+                margin-right: -4px;
+                vertical-align: top;
+                width: 40%;
+            }
+        }
+    }
+
+    .location-body {
+        padding: @padding-base-vertical * 2;
+
+        @media (min-width: @screen-xs) and (max-width: @screen-tablet) {
+            border-left: solid 1px @gray-lighter;
+            display: inline-block;
+            width: 60%;
+        }
+
+        @media (min-width: @screen-tablet) {
+            min-height: 245px;
+        }
+    }
+
+    .show-map {
+        background: lighten(@gray-darker, 78%);
+        border-top: solid 1px @gray-lighter;
+        color: @brand-primary;
+        display: block;
+        padding: 10px 20px;
+        text-align: center;
+
+        &:before {
+            .add-icon(-1px);
+            content: "\f041";
+            left: -5px;
+        }
+    }
+}
+
+.location-map {
+    .thumb-frame;
+    margin-bottom: @padding-base-vertical * 2;
+}
+
+.location-search {
+    border-bottom: solid 1px @gray-lighter;
+    border-top: solid 1px @gray-lighter;
+    margin-bottom: @padding-base-vertical * 2;
+    padding: @padding-base-vertical 0;
+}
+

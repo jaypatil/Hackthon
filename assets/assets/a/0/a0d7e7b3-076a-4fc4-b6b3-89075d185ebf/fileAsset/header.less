@@ -1,0 +1,129 @@
+//
+// Header
+// --------------------------------------------------
+// All the styles for the header of the theme
+// include navigation and search
+
+.header-logo {
+
+    @media (min-width: @grid-float-breakpoint) {
+        padding-left: @navbar-padding-horizontal;
+    }
+
+    @media (min-width: @grid-float-breakpoint) {
+        padding-bottom: 15px;
+    }
+
+    img {
+        margin-top: -15px;
+        width: 140px;
+        @media (min-width: @grid-float-breakpoint) {
+            width: auto;
+        }
+    }
+}
+
+
+.header-tools {
+   background-color: darken(@gray-dark, 0%);
+   
+   .header-tools-wrapper {
+     font-size: @font-size-x-small;
+     color: #white;
+     text-align: right;
+     padding: 6px 0 0 0;
+     a {
+       color: @white;
+       text-decoration: none;
+       display: inline-block;
+       padding: 3px 8px;
+     }
+   }
+   
+  .searchForm-header {
+  
+      @media (min-width: 480px) {
+          display: inline-block;
+          margin: 0 0 0 @padding-base-horizontal;
+          vertical-align: middle;
+      }
+      .btn {
+        padding: 1px 3px;
+      }
+  
+      input {
+
+      }
+      input[type="text"],
+      input[type="submit"] {
+          font-size: @font-size-x-small;
+      }
+      input[type="text"] {
+  
+      }
+      input[type="submit"] {
+
+      }
+   }
+}
+
+//
+// Navs
+// --------------------------------------------------
+// Extending classes from /bootstrap/less/navs.less
+
+.header-navbar {
+    @media (max-width: @screen-tablet) {
+        padding: 0;
+        width: auto;
+    }
+    
+    .navbar-toggle {
+        margin: @padding-base-vertical @padding-base-horizontal;
+    }
+    
+    .nav {
+        margin: 8px 0 3px 0;
+
+        @media (min-width: @grid-float-breakpoint) {
+            float: right;
+        }
+
+        & > li {
+
+            @media (min-width: @grid-float-breakpoint) {
+                border-left: dotted 1px @gray-dark;
+            }
+
+            &:first-child {
+                border: none;
+            }
+        }
+    }
+    .navbar-nav > li > a {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+}
+
+
+//
+// Navbars
+// --------------------------------------------------
+// Extending classes from /bootstrap/less/navbar.less
+
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0px;
+
+    @media (min-width: @screen-tablet) {
+        margin-bottom: @navbar-margin-bottom;
+    }
+}
+
+.navbar-inverse {
+  background-color: @gray-dark;
+  border: 0 solid @gray-dark;
+}

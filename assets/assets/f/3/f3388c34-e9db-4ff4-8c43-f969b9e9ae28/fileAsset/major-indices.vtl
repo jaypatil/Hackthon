@@ -1,0 +1,45 @@
+<script>
+	$(document).ready(function() {
+		jQuery.getJSON("http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22%5EGSPC%22%2C%22%5EIXIC%22%2C%22CLQ12.NYM%22%2C%22%5ETNX%22%2C%22GCQ12.CMX%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=?",
+		function(data) {
+			var i = 0;
+			while (i <= 5) {
+				console.log(data.query.results.quote[i]);
+				var x = "<li><ul>"
+				var x = x + '<li class=\"stock-name\"><h4>';
+				if ((data.query.results.quote[i].Name).indexOf("Oil") != -1) {
+					var x = x + "Oil";
+				} else if ((data.query.results.quote[i].Name).indexOf("NASDAQ") != -1) {
+					var x = x + "NASDAQ";
+				} else if ((data.query.results.quote[i].Name).indexOf("Interest") != -1) {
+					var x = x + "10-Year Bond";
+				} else if ((data.query.results.quote[i].Name).indexOf("Gold") != -1) {
+					var x = x + "Gold";
+				} else {
+					var x = x + (data.query.results.quote[i].Name);
+				}
+				var x = x + '</h4></li>';
+				var x = x + "<li>" + (data.query.results.quote[i].LastTradePriceOnly) + "</li>";
+
+				if ((data.query.results.quote[i].Change).indexOf("-") != -1) {
+					var x = x + "<li class=\"down\">" + (data.query.results.quote[i].Change) + "</li>";
+					var x = x + "<li class=\"down\">" + (data.query.results.quote[i].ChangeinPercent) + "</li>";
+				} else if ((data.query.results.quote[i].Change).indexOf("+") != -1) {
+					var x = x + "<li class=\"up\">" + (data.query.results.quote[i].Change) + "</li>";
+					var x = x + "<li class=\"up\">" + (data.query.results.quote[i].ChangeinPercent) + "</li>";
+				} else {
+					var x = x + "<li>" + (data.query.results.quote[i].Change) + "</li>";
+					var x = x + "<li>" + (data.query.results.quote[i].ChangeinPercent) + "</li>";
+				}
+        
+				var x = x + "</ul></li>"
+        
+				jQuery("#quotes").append(x);
+				i++;
+			}
+		});
+	});
+</script>
+
+<ul id="quotes" class="intranet-stock-quote"></ul>
+

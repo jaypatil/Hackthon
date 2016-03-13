@@ -1,0 +1,9 @@
+// bootstrap
+@import "bootstrap-3.2.0/bootstrap.less";
+
+// core variables and mixins
+@import "_mixins.less";
+@import "_variables.less";
+
+// dotcms template
+@import "theme/_common.less";

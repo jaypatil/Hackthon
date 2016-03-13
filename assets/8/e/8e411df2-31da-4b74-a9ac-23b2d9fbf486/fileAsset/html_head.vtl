@@ -1,0 +1,29 @@
+#if($UtilMethods.isSet($URLMapContent.title))
+    #set($pageTitle = $URLMapContent.title)
+    #set($crumbTitle = $URLMapContent.title)
+#end
+
+<title>$dotPageContent.title</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta charset="UTF-8">
+<meta name="application-name" content="dotCMS dotcms.com">
+<meta name="description" content="$dotPageContent.seodescription">
+<meta name="keywords" content="$dotPageContent.seokeywords">
+<meta name="author" content="$dotPageContent.pagemetadata">
+<meta name="lastModifiedDate" content="$dotPageContent.modDate">
+
+<link rel="shortcut icon" href="http://dotcms.com/favicon.ico" type="image/x-icon">
+
+<link href='http://fonts.googleapis.com/css?family=Kameron|Oxygen:300,400,700' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="/DOTLESS${dotTheme.path}less/main.css">
+
+<!--[if lt IE 9]>
+    <script src="_bower_components/respond/respond.min.js"></script>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!-- Load jQuery from Google CDN -->
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<!-- Load jQuery from a local copy if loading from Google fails -->
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="${dotTheme.path}_bower_components/jquery/jquery.min.js"><\/script>')</script>

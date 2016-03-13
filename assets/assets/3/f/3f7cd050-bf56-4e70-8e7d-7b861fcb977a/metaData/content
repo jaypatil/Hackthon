@@ -1,0 +1,22 @@
+#set($_qk = "+structurename:document +confolder:$!{folder1}* +document.metadata.contenttype:image/*")
+##set($_qk = "+structurename:document +confolder:$!{folder1}*")
+#set($cons = $dotcontent.pull(${_qk},$!{numberofresults},"document.syspublishdate desc"))
+
+#if ($utilmethods.isset($title))
+  <h3>$!{title}</h3>
+#end
+#if($cons.size() > 0)
+  <ul class="image-gallery">
+    #foreach($con in $cons)
+      <li>
+        <a class="js-fancybox-img thumb image-thumb small" href="/contentasset/resize-image/$con.identifier/fileasset" rel="photo-gallery" title="$!{con.title}">
+          <img src="/contentasset/image/${con.identifier}/fileasset/filter/thumbnail/thumbnail_w/200/thumbnail_h/200/" alt="$!{con.title}" />
+        </a>
+      </li>
+    #end
+  </ul>
+#else
+  <div class="alert alert-info">
+    there currently no images in the folder.
+  </div>
+#end

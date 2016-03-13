@@ -1,0 +1,6 @@
+.intranet-welcome {
+  background:         @jumbotron-bg;
+  padding:            @jumbotron-padding;
+  color:              @jumbotron-heading-color;
+}
+

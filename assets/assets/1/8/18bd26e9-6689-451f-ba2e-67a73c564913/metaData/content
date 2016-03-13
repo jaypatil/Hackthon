@@ -1,0 +1,134 @@
+//
+// header
+// --------------------------------------------------
+// all the styles for the header of the theme
+// include navigation and search
+
+.header-logo {
+
+    @media (min-width: @grid-float-breakpoint) {
+        padding-left: @navbar-padding-horizontal;
+    }
+
+    @media (min-width: @grid-float-breakpoint) {
+        padding-bottom: 15px;
+    }
+
+    img {
+        width: 140px;
+        @media (min-width: @grid-float-breakpoint) {
+            width: auto;
+        }
+    }
+}
+
+.header-navbar {
+    @media (max-width: @screen-tablet) {
+        padding: 0;
+        width: auto;
+    }
+
+    .navbar-toggle {
+        margin: @padding-base-vertical @padding-base-horizontal;
+    }
+}
+
+.header-account-search {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   z-index: 1000;
+   background-color: lighten(@gray-dark, 20%);
+   font-size: @font-size-x-small;
+   color: #white;
+   a {
+     color: @white;
+     text-decoration: none;
+   }
+
+  .header-search {
+      border: solid 1px @gray;
+      margin-top: 5px;
+      overflow: hidden;
+      position: relative;
+  
+      @media (min-width: 480px) {
+          display: inline-block;
+          margin: 0 0 0 @padding-base-horizontal;
+          vertical-align: middle;
+      }
+  
+      input {
+          float: left;
+          border-radius: 0; // just for mobile
+      }
+  
+      input[type="text"],
+      input[type="submit"] {
+          font-size: @font-size-x-small;
+      }
+  
+      input[type="text"] {
+  
+      }
+      input[type="submit"] {
+          padding: 6px;
+          position: absolute;
+          right: 0;
+          z-index: 1
+      }
+  }
+}
+
+//
+// navs
+// --------------------------------------------------
+// extending classes from /bootstrap/less/navs.less
+
+.navbar-fixed-top {
+  top: 20px;
+}
+
+.header-navbar {
+    .nav {
+        margin: 0;
+
+        @media (min-width: @grid-float-breakpoint) {
+            float: right;
+        }
+
+        & > li {
+
+            @media (min-width: @grid-float-breakpoint) {
+                border-left: dotted 1px @gray-dark;
+            }
+
+            &:first-child {
+                border: none;
+            }
+        }
+    }
+    .navbar-collapse {
+
+    }
+}
+
+
+//
+// navbars
+// --------------------------------------------------
+// extending classes from /bootstrap/less/navbar.less
+
+.navbar {
+    margin-bottom: 0;
+
+    @media (min-width: @screen-tablet) {
+        margin-bottom: @navbar-margin-bottom;
+    }
+}
+
+.navbar-inverse {
+  background-color: @gray-dark;
+}
+

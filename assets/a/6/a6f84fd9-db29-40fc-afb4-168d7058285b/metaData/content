@@ -1,0 +1,8 @@
+// center-align a block level element
+
+.center-block() {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+

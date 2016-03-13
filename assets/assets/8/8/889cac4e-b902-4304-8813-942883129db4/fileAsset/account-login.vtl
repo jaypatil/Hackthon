@@ -1,0 +1,47 @@
+#if($UtilMethods.isSet($user))
+
+<div class="login-form-wrap">
+  <div class="login-logged-in">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Your account</h3>
+      </div>
+      <div class="panel-body">
+        <h3>Welcome back, $user.firstName</h3>
+        <ul>
+          <li><a href="/dotCMS/myAccount">My account</a></li>
+          <li><a href="/application/login/forgot_password.html">Forgot password</a></li>
+          <li><a href="/dotCMS/logout?referrer=/home/">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+#else
+
+<div class="login-form-wrap">
+  #set($loginFormSourceCode ='/application/vtl/pages/user-account/account-login-form.vtl')
+  #loginForm()
+
+  <div class="login-create-account">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Create account</h3>
+      </div>
+      <div class="panel-body">
+      	<p>
+      		<a href="#" class="btn btn-lg btn-info"><i class="fa fa-facebook"> Login with Facebook</i></a> &nbsp;
+			<a href="#" class="btn btn-lg btn-danger"><i class="fa fa-google-plus"> Login with Google+</i></a>
+		</p>
+        <div class="create-account-button">
+        	<p>Create an account to get access to our intranet and upload files to our document repository. If you don’t want to create an account you can login in with:</p>
+        	<p><b>Username:</b> bill@dotcms.com<br><b>Password:</b> bill</p>
+        	<a href="/application/createaccount/create_account.html" class="btn btn-lg btn-create-account">Create Account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+#end

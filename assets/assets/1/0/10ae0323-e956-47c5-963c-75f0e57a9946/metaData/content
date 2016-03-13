@@ -1,0 +1,6 @@
+
+<h1>helo</h1>
+
+
+#set($myjson = $json.fetch("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20('%5egspc'%2c'%5edji'%2c'%5eixic')%20&format=json&diagnostics=true&env=store%3a%2f%2fdatatables.org%2falltableswithkeys"))
+$myjson.query.count

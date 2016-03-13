@@ -1,0 +1,59 @@
+.my-account-wrap {
+    .address-info,
+    .my-account {
+        .make-sm-column(6);
+    }
+}
+
+.address-info {
+    .address-list {
+            .make-row;
+
+            address, .phone {
+                margin: 0
+            }
+
+            article {
+                border-bottom: solid 1px @gray-lighter;
+                min-height: 200px;
+                padding-bottom: @padding-base-vertical;
+            }
+
+            .media {
+                .make-xs-column(6);
+                .make-md-column(4);
+                margin: 0 0 @padding-base-vertical;;
+
+                &:first-child {
+                    margin: 0 0 @padding-base-vertical;;
+                }
+            }
+    }
+}
+
+.my-account {
+
+    .address-action {
+        margin-top: @padding-base-vertical;
+    }
+
+    .button-group {
+        .control-field {
+            .make-md-column-offset(4);
+            .make-md-column(8);
+        }
+    }
+
+    .control-field {
+        .make-md-column(8);
+    }
+
+    .control-label {
+        .make-md-column(4);
+    }
+
+}
+
+.my-account-wrap {
+    .make-row();
+}

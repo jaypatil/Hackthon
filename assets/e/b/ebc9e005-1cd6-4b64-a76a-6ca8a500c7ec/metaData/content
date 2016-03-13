@@ -1,0 +1,8 @@
+<div class="youtube-widget">
+  <article>
+    <a href="$url" class="js-fancybox-media-link thumb media-thumb" title="$!{widgettitle}">
+      <img src="$!{thumbnail2}" alt="$!{widgettitle}"/>
+    </a>
+  </article>
+</div>
+

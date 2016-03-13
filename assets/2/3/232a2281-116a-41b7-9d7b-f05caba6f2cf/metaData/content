@@ -1,0 +1,9 @@
+// text overflow
+// requires inline-block or block for proper styling
+
+.text-overflow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+

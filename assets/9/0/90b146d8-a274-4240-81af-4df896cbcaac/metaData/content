@@ -1,0 +1,10 @@
+// webkit-style focus
+
+.tab-focus() {
+  // default
+  outline: thin dotted;
+  // webkit
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+

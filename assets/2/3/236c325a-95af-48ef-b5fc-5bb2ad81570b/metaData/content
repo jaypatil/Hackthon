@@ -1,0 +1,50 @@
+.create-account-form {
+    .make-row();
+
+    .address-info,
+    .profile-info {
+        .make-sm-column(6);
+    }
+
+
+    .address-type {
+        float: right;
+        margin-top: 4px;
+
+        .btn {
+            .border-bottom-radius(0);
+            border-bottom: none;
+            padding-bottom: 4px;
+        }
+    }
+
+    .btn-create-account
+    .btn-cancel {
+        float: right;
+        margin-left: @padding-base-horizontal;
+    }
+
+    .button-group {
+        .control-field {
+            .make-md-column-offset(4);
+            .make-md-column(8);
+        }
+    }
+
+    .control-field {
+        .make-md-column(8);
+    }
+
+    .control-label {
+        .make-md-column(4);
+    }
+
+    .profile-info {
+        margin-bottom: 40px;
+
+        @media (min-width: @screen-tablet) {
+            margin-bottom: 0;
+        }
+    }
+
+}

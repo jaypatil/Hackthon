@@ -1,0 +1,147 @@
+//
+// Variables
+// --------------------------------------------------
+// Bootraps uses variables to almost everything,
+// this file is to overwrite those variables and
+// custom out theme
+// -----------------------------------------------
+//* This variables are not from Bootstrap.
+
+//
+// Variables
+// --------------------------------------------------
+
+// Grays
+// -------------------------
+
+@gray-darker:               #13191F;
+@gray-dark:                 #26333F;
+@gray:                      #52606B;
+@gray-light:                #9FC5E2;
+@gray-lighter:              #A8ABB0;
+
+
+// General Colors
+// -------------------------
+
+@white:                     white;
+@blue:                      #3A71BD;
+@blue-darker:               #354F6A;
+
+// Brand colors
+// -------------------------
+
+@brand-primary:             @blue;
+@brand-secondary:           #C5283C;
+//@brand-success:           #5cb85c;
+@brand-warning:           #DF5C36;
+@brand-danger:            #C5283C;
+@brand-info:              #26333F;
+
+
+// Links
+// -------------------------
+
+@link-hover-color:      @brand-secondary;
+
+
+// Typography
+// -------------------------
+
+@font-size-base:            13px;
+@font-size-x-small:         ceil(@font-size-base * 0.7); // ~10px
+@font-size-x-large:         ceil(@font-size-base * 1.7); // ~24px
+
+// Iconography
+// -------------------------
+
+// TODO: replace this with absolute path on theme
+@icon-font-path:          "/application/themes/quest/_bower_components/bootstrap/fonts/";
+@icon-font-path-custom:   "/application/themes/quest/fonts/";
+
+
+// Components
+// -------------------------
+// Based on 14px font-size and 1.428 line-height (~20px to start)
+
+@padding-base-vertical:          10px;
+@padding-base-horizontal:        10px;
+
+
+
+// COMPONENT VARIABLES
+// --------------------------------------------------
+
+
+// Grid system
+// --------------------------------------------------
+
+// Point at which the navbar stops collapsing
+@grid-float-breakpoint:     @screen-desktop;
+
+
+
+// Navbar
+// -------------------------
+
+// Basics of a navbar
+@navbar-height:                    54px;
+@navbar-padding-vertical:          15px;
+
+// Inverted navbar toggle
+@navbar-inverse-toggle-hover-bg:            red;
+@navbar-inverse-toggle-border-color:        none;
+
+
+
+// Tabs
+@nav-tabs-border-color:                     @gray-lighter;
+
+@nav-tabs-justified-link-border-color:            #ddd;
+@nav-tabs-justified-active-link-border-color:     @body-bg;
+
+// Pills
+@nav-pills-active-link-hover-bg:            @component-active-bg;
+@nav-pills-active-link-hover-color:         #fff;
+
+
+
+// Pagination
+// -------------------------
+
+@pagination-bg:                        #fff;
+@pagination-border:                    @gray-lighter;
+@pagination-hover-bg:                  @gray-lighter;
+@pagination-disabled-color:            @gray-lighter;
+
+
+
+// Forms
+// -------------------------
+
+@legend-color:                   @brand-secondary;
+@legend-border-color:            @gray-lighter;
+
+
+
+// Jumbotron
+// -------------------------
+
+@jumbotron-padding:              20px;
+@jumbotron-bg:                   lighten(@gray, 55%);
+@jumbotron-heading-color:        @brand-secondary;
+
+
+
+// Miscellaneous
+// -------------------------
+
+// Horizontal forms & lists
+@component-offset-horizontal: 120px;
+
+
+
+
+// Font Awesome
+// -------------------------
+@fa-font-path:        "/application/themes/quest/_bower_components/font-awesome/fonts";

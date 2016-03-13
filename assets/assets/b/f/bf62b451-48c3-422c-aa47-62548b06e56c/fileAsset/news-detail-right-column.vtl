@@ -1,0 +1,67 @@
+#set($categoryList = "")
+#set($nowsers= $date.format('yyyyMMddHHmmss', $date.getDate()))
+#foreach($con in $URLMapContent.topic)
+	#set($categoryList = "$categoryList $con.categoryVelocityVarName")
+#end
+
+
+
+<!-- RELATED NEWS -->
+	#set($_qk = "+structureName:News
+	+(conhost:$host.identifier conhost:SYSTEM_HOST)
+	+($categoryList)
+	-News.title:*${URLMapContent.title}*
+	+News.sysPublishDate:[19001010101000 TO $nowsers]")
+  
+    #set($cons = $dotcontent.pull(${_qk},10,"News.syspublishdate desc"))
+    
+    <h3>Related News</h3>  
+	#foreach($con in $cons)
+		<div class="media">
+			<div class="media-heading"><a href="/news/$con.urlTitle">$!{con.title}</a></div>
+			<div class="media-subheading">
+				<time datetime="$date.format('yyyy-M-dd',$con.sysPublishDate)">$date.format('MMM dd yyyy', ${con.sysPublishDate}) at $date.format('HH:mm z', $!{con.sysPublishDate})</time>
+			</div>
+		</div>
+		<hr>
+	#end
+
+
+<!-- RELATED MEDIA --> 
+	#set($_qk = "+structureName:Media
+	+(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:SYSTEM_HOST)
+	+($categoryList)
+	+Media.sysPublishDate:[19001010101000 TO $nowsers]")
+  
+	#set($cons = $dotcontent.pull(${_qk},9,"Media.syspublishdate desc"))
+    
+    <h3>Related Media</h3>
+	 #foreach($con in $cons)
+		## Set File path for link
+		#if ($UtilMethods.isSet($con.file.rawUri))
+			#set ($filePath = "$con.file.rawUri/$con.file.name")
+		#else
+			#set ($filePath = $con.url)
+		#end
+      
+      <div class="media">
+      	<div class="media-badge pull-left">
+	      ## Set thumbnail Image
+	      #if ($UtilMethods.isSet($con.thumbnail.rawUri))
+	        #set ($thumbNail = "<a href='$filePath' class='js-fancybox-media-link thumb media-thumb' title='$!{con.title}'><img src='/contentAsset/image/$con.inode/thumbnail/byInode/1/filter/Resize/resize_h/60/resize_w/120' alt='$!{con.title}'></a>")
+	      #elseif($UtilMethods.isImage($filePath))
+	        #set ($thumbNail = "<img src='/contentAsset/image/$con.inode/file/byInode/1/filter/Resize/resize_h/60/resize_w/120' alt='$!{con.title}' />")
+	      #else
+	        #set ($thumbNail = "<img src='/images/photos/willathishomeoffice.jpg' width='120' alt='$!{con.title}' />")
+	      #end
+      
+  $thumbNail
+
+        </div>
+        <div class="media-body">
+          <div class="media-heading">$con.title</div>
+          <div class="media-subheading">$date.format('MMM dd yyyy',$con.sysPublishDate) at $date.format('HH:mm z',$con.sysPublishDate)</div>
+          <div class="media-description">$UtilMethods.prettyShortenString("$con.description", 100)</div>
+        </div>
+      </div>
+    #end

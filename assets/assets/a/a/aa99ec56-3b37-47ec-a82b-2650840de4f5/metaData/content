@@ -1,0 +1,140 @@
+#set($clickstream  = $session.getattribute("clickstream"))
+#set($geolocationfromsession = $session.getattribute("geolocation"))
+#if(!$utilmethods.isset($geolocationfromsession))
+	#set($locationurl = "http://www.geoplugin.net/json.gp?ip=$request.getremoteaddr()")
+	#set($geolocation = $json.fetch("$!locationurl"))
+	$session.setattribute("geolocation", $geolocation)
+#else
+	#set($geolocation = $session.getattribute("geolocation"))
+#end
+
+#set($clickstreamrequests = $clickstream.clickstreamrequests)
+#set($interestedprivatebanking = false)
+#set($contactedus = false)
+#foreach($click in $clickstreamrequests)
+	#if($click.requesturi.indexof("/services/private-banking/") > -1)
+		#set($interestedprivatebanking = true)
+	#end
+	#if($click.requesturi.indexof("/contact-us/thank-you.html") > -1)
+		#set($contactedus = true)
+	#end
+#end
+
+<table>
+	#if(!$utilmethods.isset($geolocation))
+		<tr><td colspan="2">no geolocation data available.</td></tr>
+	#else
+		<tr>
+			<td colspan="2">
+				<h2>you are here:</h2>
+				<img src="http://maps.google.com/maps/api/staticmap?zoom=10&amp;size=265x100&amp;maptype=roadmap&amp;markers=color:blue|label:s|${geolocation.geoplugin_latitude},${geolocation.geoplugin_longitude}&amp;sensor=false" alt="your location" />
+			</td>
+		</tr>
+		<tr>
+			<td>country</td>
+			<td>$geolocation.geoplugin_countryname</td>
+		</tr>
+		<tr>
+			<td>region/state</td>
+			<td>$geolocation.geoplugin_regionname</td>
+		</tr>
+		<tr>
+			<td>city</td>
+			<td>$geolocation.geoplugin_city</td>
+		</tr>
+		<tr>
+			<td>currency</td>
+			<td>$geolocation.geoplugin_currencysymbol / $geolocation.geoplugin_currencycode</td>
+		</tr>
+		<tr>
+        	<td>tel. code</td>
+        	<td>$geolocation.geoplugin_areacode </td>
+		</tr>
+		<tr>
+			<td>market (dma) code</td>
+			<td>$geolocation.geoplugin_dmacode</td>
+		</tr>
+	#end
+	
+		<tr>
+			<td colspan="2">
+				inital referer to this site:<br/>
+				#if($utilmethods.isset($clickstream.initialreferrer))
+					$!clickstream.initialreferrer
+				#else
+					unknown
+				#end
+			</td>
+		</tr>
+		<tr>
+			<td style="width:30%">remote address:</td>
+			<td style="width:70%">$!clickstream.remoteaddress</td>
+		</tr>
+		<tr>
+			<td>remote hostname:</td>
+			<td>$!clickstream.remoteaddress</td>
+		</tr>
+		<tr>
+			<td>is mobile?</td>
+			<td>$!clickstream.mobiledevice</td>
+		</tr>
+		<tr class="normaltip" title="$!clickstream.useragent">
+			<td>browser:</td>
+			<td>$!clickstream.browsername</td>
+		</tr>
+		<tr class="normaltip" title="$!clickstream.useragent">
+			<td>os:</td>
+			<td>$!clickstream.operatingsystem</td>
+		</tr>
+	</table>
+	<a class="js-fancybox-inline" href="#clicktrail">see click trails</a>
+</div>
+
+
+
+<div style="display:none;">
+	<div id="clicktrail">
+		<div style="height:400px;overflow-y:scroll;">
+			
+			#if(!$clickstreamrequests || $clickstreamrequests.size() !=0)
+				<table>
+					<tr>
+						<th style="width:40px;">click</th>
+						<th>page</th>
+						<th>&nbsp;</th>
+						<th style="width:100px;text-align:center;">time</th>
+					</tr>
+					
+					#set($counter = 0)
+					#foreach($click in $clickstreamrequests)
+						#set($counter = $math.add($counter, 1))
+						#set($diff = "")
+						#if($counter < $clickstreamrequests.size())
+							#set($next = $clickstreamrequests.get($counter))
+							#set($diff = $next.timestamp.gettime() - $click.timestamp.gettime() )
+							#set($diff = $math.tointeger($math.div($diff, 1000)))
+							#if($diff >60)
+								#set($diff = "$math.tointeger(${math.div($diff, 60)})m $math.tointeger(${math.mod($diff, 60)})s")
+							#else
+								#set($diff = "$math.tointeger(${math.add($diff, 1)})s")
+							#end
+						#end
+						<tr>
+							<td style="width:20px;text-align:center;">$counter</td>
+							<td><a href="$click.requesturi?$!click.querystring" target="_blank">$click.requesturi</a></td>
+							<td style="width:20px;text-align:center;">
+								#set($language = $languagewebapi.getlanguage("$!click.languageid"))
+								<img src="/html/images/languages/${language.languagecode}_${language.countrycode}.gif" alt="${language.countrycode}" />
+							</td>
+							<td style="width:80px;text-align:center;">$!diff</td>
+						</tr>
+					#end
+	    		</table>
+			#else
+				<table><tr><td colspan="4">no data</td></tr></table>
+			#end
+	
+		</div>
+	</div>
+</div>
+

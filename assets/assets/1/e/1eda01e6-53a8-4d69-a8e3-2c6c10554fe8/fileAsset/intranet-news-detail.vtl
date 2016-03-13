@@ -1,0 +1,7 @@
+#set ($id = "$!{request.getParameter('newsId')}")
+
+#if($id != "")
+	$dotcontent.find('$id')
+#else
+	Show News Listing
+#end

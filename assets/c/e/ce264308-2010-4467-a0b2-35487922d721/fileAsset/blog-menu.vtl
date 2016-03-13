@@ -1,0 +1,35 @@
+#set($blogSearch = $request.getParameter('blogSearch'))
+<div class="blog-menu">
+  <form method="get">
+    <div class="input-group search-field">
+      <input type="text" name="blogSearch" id="searchBox" class="form-control" placeholder="Search" #if($blogSearch != '') value="$!{blogSearch}"#end />
+      <span class="input-group-btn">
+        <button class="btn btn-primary btn-document-search" type="submit"></button>
+      </span>
+    </div><!-- /search-field -->
+    <input type="hidden" name="search" value="true" />
+  </form>
+
+  <div class="panel panel-default search-filter topics">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><h4 class="panel-title">Topics</h4></div>
+    <div class="list-group">
+      <a href="/blogs/" class="list-group-item#if(!$request.getParameter('cat')) active#end">Most Recent</a>
+      #foreach($con in $categories.getChildrenCategoriesByKey("topic"))
+        <a href="/blogs/?cat=$con.categoryVelocityVarName" class="list-group-item#if($request.getParameter('cat') == $con.categoryVelocityVarName) active#end">$con.categoryName</a>
+      #end
+    </div>
+  </div>
+
+  <div class="panel panel-default search-filter tags">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><h4 class="panel-title">Tags</h4></div>
+    <div class="panel-body">
+      <nav class="tag-cloud">
+        #set($tagCloudNoStyles = "true")
+        #tagCloud("Blog" '/blogs/index' 20)
+      </nav>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,38 @@
+#set($navList = $navtool.getNav("/"))
+<ul class="sitemaps">
+	#foreach($menuItem in $navList)
+		<li>
+			<a href='${$menuItem.href}'>${$menuItem.title}</a>
+			#set($children1 = $menuItem.children)
+			#if( $children1 && $children.size() > 0 )
+				<ul>
+					#foreach($level1 in $children1)
+						<li>
+							<a href='${level1.href}'>${level1.title}</a>
+							#set($children2 = $level1.children)
+							#if( $children2 && $children2.size() > 0 )
+								<ul>
+									#foreach($level2 in $children2)
+										<li>
+											<a href='${level2.href}'>${level2.title}</a>
+											#set($children3 = $level2.children)
+											#if( $children3 && $children3.size() > 0 )
+												<ul>
+													#foreach($level3 in $children3)
+														<li>
+															<a href='${level3.href}'>${level3.title}</a>
+														</li>
+													#end
+												</ul>
+											#end
+										</li>
+									#end
+								</ul>
+							#end
+						</li>
+					#end
+				</ul>
+			#end
+		</li>
+	#end
+</ul>

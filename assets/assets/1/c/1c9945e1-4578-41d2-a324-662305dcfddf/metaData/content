@@ -1,0 +1,285 @@
+#if($utilmethods.isset($request.getparameter("q")))
+
+    ##setting variables =========
+
+    #set($exclude = "-mimetype:*css* -mimetype:*js* -mimetype:*plain  -mimetype:*jpg -mimetype:*png -mimetype:*jpeg -mimetype:*javascript* -mimetype:*velocity*")
+
+    #set($urllist = $contents.getemptylist())
+    #if ($utilmethods.isset($request.getparameter("q")))
+        #set($q = $request.getparameter("q"))
+        #set($qurl = "q=$!{q}")
+    #end
+
+    #if ($utilmethods.isset($request.getparameter("mimetype")))
+        #set($mimetype = $request.getparameter("mimetype"))
+        #set($mimetypeurl = "mimetype=$!{mimetype}")
+        #set($_dummy = $urllist.add("mimetype=$!{mimetype}"))
+    #end
+
+    #if ($utilmethods.isset($request.getparameter("keyword")))
+        #set($keyword = $request.getparameter("keyword"))
+        #set($keywordurl = "keyword=$!{keyword}")
+        #set($_dummy = $urllist.add("keyword=$!{keyword}"))
+    #end
+
+    #if ($utilmethods.isset($request.getparameter("modifiedon")))
+        #set($modifiedon = $request.getparameter("modifiedon"))
+        #set($modifiedonurl = "modifiedon=$!{modifiedon}")
+        #set($_dummy = $urllist.add("modifiedon=$!{modifiedon}"))
+    #end
+
+    ## query =============
+    #set($runq = $q.replaceall("\"", ""))
+    #set($newq = "")
+    #if(!$runq.contains("+"))
+        #foreach($xx in $runq.split(" "))
+            #set($newq = " $newq +$xx* title:$xx*")
+        #end
+        #set($runq = "$newq")
+    #end
+
+    #if($utilmethods.isset($mimetype))
+        #set($runq = "$runq +mimetype:$mimetype")
+    #end
+
+    #if($utilmethods.isset($keyword))
+        #if($keyword.contains(" "))
+            #set($runq = "$runq +keywords:${esc.q}$keyword${esc.q}")
+        #else
+            #set($runq = "$runq +keywords:$keyword")
+        #end
+    #end
+
+    #if($utilmethods.isset($modifiedon))
+        #set($runq = "$runq +modified:$modifiedon")
+    #end
+
+    #set($runq = "$runq $exclude")
+
+
+    ##calling search viewtool =======
+    #set($indextosearch = "site search")
+    #set($searchresults = $sitesearch.search($indextosearch, $!runq, $offset, $itemsperpage))
+
+
+    ##pagination variables =============
+    #set ($itemsperpage = 10)
+    #set ($numberofpages = $searchresults.totalresults / $itemsperpage)
+    #if ($utilmethods.isset($request.getparameter('page')))
+        #set ($page = $webapi.parseint($request.getparameter('page')))
+        #set ($offset = $math.mul($itemsperpage, $page))
+    #else
+        #set ($page = 1)
+        #set ($offset = 0)
+    #end
+
+
+    ## facets ==========
+    ## if there are quotes, we need to escape them
+    ## for a facet query
+    #if($runq.contains('"'))
+        #set($runq = $runq.replaceall("\"", "\\\""))
+    #end
+
+    #set($mimefacetsqry = '{
+        "query" : { "query_string" : {"query" : "$runq"} },
+        "facets" : {
+            "mimetype" : { "terms" : {"field" : "mimetype"} }
+         }, "size" : 0
+    }')
+
+    #set($mimefacetsqry = $render.eval($context, $mimefacetsqry ))
+    #set($mimefacets = $sitesearch.getfacets($indextosearch, $mimefacetsqry))
+
+    #set($datefacets = '{
+        "query" : { "query_string" : {"query" : "$runq"} },
+        "facets" : {
+            "modified" : { "date_histogram" : {"field" : "modified","interval" : "month" }}
+        }, "size" : 0
+    }')
+
+    #set($datefacets = $render.eval($context, $datefacets ))
+    #set($datefacets = $sitesearch.getfacets($indextosearch, $datefacets))
+
+    ##keywords facet
+    #set($kwfacetsqry = '  {
+        "query" : { "query_string" : {"query" : "$runq"} },
+        "facets" : {
+            "keywords" : { "terms" : { "field" : "keywords", "size" : 10 } }
+        }, "size" : 0
+    }')
+
+    #set($kwfacetsqry = $render.eval($context,$kwfacetsqry))
+    #set($kwfacets = $sitesearch.getfacets($indextosearch, $kwfacetsqry))
+#end
+
+<div class="row search-results">
+    #if($searchresults.results.size() > 0)
+        <div class="col-sm-9 main-content">
+            <!-- ##printing search results variables
+            start: $searchresults.start
+            total results: $searchresults.totalresults
+            took: $searchresults.took
+            limit: $searchresults.limit
+            offset: $searchresults.offset
+            maxscore: $searchresults.maxscore
+            index: $searchresults.index -->
+
+            <p class="results-info">we found <b>$searchresults.results.size()</b> results in your search</p>
+            <ul class="media-list search-results">
+            #foreach($result in $searchresults.results)
+                ##printing each search result
+                <li>
+                    <h4><a href="http://$result.url">$result.title</a></h4>
+                    <p class="url">http://$result.url</p>
+                    <p>$utilmethods.shortenstring("$result.description", 160)</p>
+                </li>
+            #end
+            </ul>
+
+            #if ($numberofpages > 1)
+                <div class="text-center">
+                    #set($paginationurl = "")
+                    #foreach($url in $urllist)
+                        #set($paginationurl = "$!{paginationurl}&$!{url}")
+                    #end
+                    <ul class="pagination">
+                        #set($prev = $page - 1)
+                        #if ($prev > 0)
+                            <li><a href="?$!{qurl}$!{paginationurl}&page=$prev">«</a></li>
+                        #end
+                        #foreach ($i in [1..$numberofpages])
+                            <li #if ($page == $i)class="active"#end><a href="?$!{qurl}$!{paginationurl}&page=$!{i}">$i</a></li>
+                        #end
+                        #set($next = $page + 1)
+                        #if ($next <= $numberofpages)
+                            <li><a href="?$!{qurl}$!{paginationurl}&page=$next">»</a></li>
+                        #end
+                    </ul>
+                </div>
+            #end
+        </div>
+
+        <div class="col-sm-3 sidebar">
+            #set($mimefacetsurl = "")
+            #foreach($url in $urllist)
+                #if (!$url.contains('mimetype'))
+                    #set($mimefacetsurl = "$!{mimefacetsurl}&$!{url}")
+                #en            #end
+            #if ($utilmethods.isset($mimefacets) && $mimefacets.size() > 0)
+                #foreach($facet in $mimefacets)
+                    #if(!$utilmethods.isset($facet.entries()) || $facet.entries().size() == 0)
+                        <div class="alert alert-info">no results</div>
+                    #else
+                        <h5>by type:</h5>
+                        <div class="list-group">
+                            #foreach($term in $facet.entries())
+                                #set($strstart = $term.term.indexof("/") +1)
+                                #set($strend = $term.term.length())
+                                #set($termterm  = $term.term.substring($strstart, $strend))
+                                #if($termterm.contains("document"))
+                                    #set($termterm = "document")
+                                #end
+                                #if($utilmethods.isset($mimetype))
+                                    <a class="list-group-item active" href="?q=$!{q}$!{mimefacetsurl}"><i class="glyphicon glyphicon-remove clear-icon"></i> $termterm</a>
+                                #else
+                                    <a href="?q=$!{q}$!{mimefacetsurl}&mimetype=$term.term" class="list-group-item">
+                                        $termterm
+                                        <span class="badge">$term.count</span>
+                                    </a>
+                                #end
+                            #end
+                        </div>
+                    #end
+                #end
+            #end
+
+            #if ($datefacets)
+                #set($datefacetsurl = "")
+                #foreach($url in $urllist)
+                    #if (!$url.contains('modifiedon'))
+                        #set($datefacetsurl = "$!{datefacetsurl}&$!{url}")
+                    #end
+                #end
+                #foreach($facet in $datefacets)
+                    #if(!$utilmethods.isset($facet.entries()) || $facet.entries().size() == 0)
+                        <div class="alert alert-info">no results</div>
+                    #else
+                        <h5>month modified:</h5>
+                        <div class="list-group">
+                            #set($terms = $facet.entries())
+                            #set($startdate = $date.getdate())
+                            #foreach($t in $facet.entries())
+                                #set($index = $facet.entries().size() - $velocitycount )
+                                #set($t = $listtool.get($terms,$index))
+                                #set($x = $date.getdate())
+                                ${x.settime($t.time)}
+                                #set($nextday = $date.getdate())
+                                $nextday.settime($math.add($x.time, 86400000))
+                                #if($utilmethods.isset($modifiedon))
+                                    <a class="list-group-item active" href="?q=$!{q}$!{datefacetsurl}"><i class="glyphicon glyphicon-remove clear-icon"></i>$date.format('mmm y', $nextday)</a>
+                                #else
+                                    <a href="?q=$!{q}$!{datefacetsurl}&modifiedon=[$date.format('yyyy-mm-dd', $nextday) to $date.format('yyyy-mm-dd', $startdate)]" class="list-group-item">
+                                        $date.format('mmm y', $nextday)
+                                        <span class="badge">$t.count</span>
+                                    </a>
+                                #end
+                                #set($startdate = $x)
+                            #end
+                        </div>
+                    #end
+                #end
+            #end
+
+            #if($utilmethods.isset($kwfacets) && $kwfacets.size() > 0)
+                #set($keywordurl = "")
+                #foreach($url in $urllist)
+                    #if (!$url.contains('keyword'))
+                        #set($keywordurl = "$!{keywordurl}&$!{url}")
+                    #end
+                #end
+                #foreach($facet in $kwfacets)
+                    #if($facet.entries().size() > 1)
+                        <h5>by keyword:</h5>
+                        <div class="list-group">
+                            #foreach($term in $facet.entries())
+                                #if($utilmethods.isset($term.term))
+                                    #if($utilmethods.isset($keyword) && $term.term == $keyword)
+                                        <a class="list-group-item active" href="?q=$!{q}$!{keywordurl}"><i class="glyphicon glyphicon-remove clear-icon"></i>$term.term</a>
+                                    #else
+                                        <a href="?q=$!{q}$!{keywordurl}&keyword=$term.term" class="list-group-item #if($keyword == $term.term)active#end">$term.term <span class="badge">$term.count</span></a>
+                                    #end
+                                #end
+                            #end
+                        </div>
+                    #end
+                #end
+            #else
+                <div class="alert alert-info">no results</div>
+            #end
+        </div>
+    #else
+        #if($utilmethods.isset($q))
+            #set($title = "no results found for '$!{q}'")
+            #set($placeholder = "why don't you try again with other keywords?")
+        #else
+            #set($title = "what are you looking for?")
+            #set($placeholder = "")
+        #end
+        <div class="col-sm-12">
+            <div class="jumbotron">
+                <h3>$title</h3>
+                <form id="searchformbody" name="searchformbody" action="/home/site-search.html" class="search-body">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <input id="search-input-body" name="q" type="text" autocomplete="off" placeholder="$placeholder" class="form-control input-lg">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="submit" alt="search" value="search" name="search" class="btn btn-lg btn-primary btn-search">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    #end
+</div>

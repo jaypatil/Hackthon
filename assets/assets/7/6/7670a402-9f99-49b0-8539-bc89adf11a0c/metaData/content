@@ -1,0 +1,20 @@
+<script>
+// flickr
+  $(document).ready(function(){
+    $('#flicker-$content_inode').jflickrfeed({
+      limit: $!{results},
+      qstrings: {
+        id: '$!{account}'
+      },
+      itemtemplate:
+      '<li>'+
+        '<a rel="flicker-gallery" href="{{image}}" class="js-fancybox-img thumb image-thumb small" title="{{title}}">' +
+          '<img src="{{image_s}}" alt="$!{title}" />' +
+        '</a>' +
+      '</li>'
+    });
+  });
+</script>
+<h3>$!{title} $content hello</h3>
+<ul id="flicker-$content_inode" class="image-gallery"></ul>
+

@@ -1,0 +1,8 @@
+#set($myjson = $json.fetch("http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22%5egspc%22%2c%22%5eixic%22%2c%22clq12.nym%22%2c%22%5etnx%22%2c%22gcq12.cmx%22)&format=json&env=store%3a%2f%2fdatatables.org%2falltableswithkeys"))
+
+#foreach($stock in $myjson.result)
+	$stock
+#end
+
+<hr>
+$myjson

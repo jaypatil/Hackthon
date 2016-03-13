@@ -1,0 +1,22 @@
+// css image replacement
+//
+// heads up! v3 launched with with only `.hide-text()`, but per our pattern for
+// mixins being reused as classes with the same name, this doesn't hold up. as
+// of v3.0.1 we have added `.text-hide()` and deprecated `.hide-text()`.
+//
+// source: https://github.com/h5bp/html5-boilerplate/commit/aa0396eae757
+
+// deprecated as of v3.0.1 (will be removed in v4)
+.hide-text() {
+  font: ~"0/0" a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+// new mixin to use as of v3.0.1
+.text-hide() {
+  .hide-text();
+}
+
